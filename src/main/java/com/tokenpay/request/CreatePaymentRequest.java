@@ -3,6 +3,7 @@ package com.tokenpay.request;
 import com.tokenpay.model.CurrencyCode;
 import com.tokenpay.model.PaymentGroup;
 import com.tokenpay.model.PaymentPhase;
+import com.tokenpay.request.common.BaseRequest;
 import com.tokenpay.request.dto.CardDto;
 import com.tokenpay.request.dto.CreatePaymentItemDto;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.tokenpay.request;
+package com.tokenpay.request.common;
 
 import com.google.gson.Gson;
 import com.tokenpay.exception.HttpClientException;

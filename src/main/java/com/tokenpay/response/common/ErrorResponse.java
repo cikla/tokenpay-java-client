@@ -1,6 +1,5 @@
-package com.tokenpay.response;
+package com.tokenpay.response.common;
 
-import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Response {
+public class ErrorResponse {
 
-    private ErrorResponse errors;
-
-    private JsonObject data;
+    private String errorCode;
+    private String errorDescription;
+    private String errorGroup;
 }

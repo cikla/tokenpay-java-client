@@ -2,7 +2,7 @@ package com.tokenpay.net;
 
 import com.google.gson.Gson;
 import com.tokenpay.exception.HttpClientException;
-import com.tokenpay.response.Response;
+import com.tokenpay.response.common.Response;
 
 import java.io.*;
 import java.net.HttpURLConnection;

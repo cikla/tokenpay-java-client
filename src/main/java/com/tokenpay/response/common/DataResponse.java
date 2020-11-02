@@ -1,4 +1,4 @@
-package com.tokenpay.response;
+package com.tokenpay.response.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

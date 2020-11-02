@@ -1,12 +1,14 @@
 package com.tokenpay;
 
+import com.tokenpay.adapter.PaymentAdapter;
+import com.tokenpay.adapter.TokenpayAdapterFactory;
 import com.tokenpay.model.CurrencyCode;
-import com.tokenpay.model.Payment;
 import com.tokenpay.model.PaymentGroup;
 import com.tokenpay.model.PaymentPhase;
 import com.tokenpay.request.CreatePaymentRequest;
 import com.tokenpay.request.dto.CardDto;
 import com.tokenpay.request.dto.CreatePaymentItemDto;
+import com.tokenpay.response.PaymentResponse;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -64,7 +66,14 @@ public class TestApplication {
                 .items(items)
                 .build();
 
-        Payment payment = Payment.create(request);
-        System.out.println(String.format("Create Payment Result: %s", payment));
+        PaymentAdapter paymentAdapter = TokenpayAdapterFactory.retrievePaymentAdapter();
+        PaymentResponse paymentResponse = paymentAdapter.createPayment(request);
+        System.out.println(String.format("Create Payment Result: %s", paymentResponse));
+
+        PaymentResponse paymentResponse2 = new PaymentAdapter().createPayment(request);
+        System.out.println(String.format("Create Payment Result2: %s", paymentResponse2));
+
+        PaymentResponse paymentResponse3 = new TokenPay().payment().createPayment(request); // ilk secim bu gibi oldu
+        System.out.println(String.format("Create Payment Result3: %s", paymentResponse3));
     }
 }

@@ -1,4 +1,4 @@
-package com.tokenpay.request;
+package com.tokenpay.request.common;
 
 public abstract class BaseRequest {
     public abstract String getPath();

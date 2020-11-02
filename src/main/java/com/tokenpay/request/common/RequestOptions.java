@@ -1,4 +1,4 @@
-package com.tokenpay.request;
+package com.tokenpay.request.common;
 
 import com.tokenpay.TokenPay;
 import lombok.Builder;
