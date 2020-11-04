@@ -3,33 +3,52 @@ package com.tokenpay.request;
 import com.tokenpay.model.CurrencyCode;
 import com.tokenpay.model.PaymentGroup;
 import com.tokenpay.model.PaymentPhase;
+import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import com.tokenpay.request.dto.CardDto;
 import com.tokenpay.request.dto.CreatePaymentItemDto;
 import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Builder
+@Data
+@SuperBuilder
 public class CreatePaymentRequest extends BaseRequest {
-    private BigDecimal price;
-    private BigDecimal paidPrice;
+
+    protected BigDecimal price;
+
+    protected BigDecimal paidPrice;
+
     @Builder.Default
-    private BigDecimal walletPrice = BigDecimal.ZERO;
-    private Integer installment;
-    private CurrencyCode currency;
-    private PaymentGroup paymentGroup;
-    private String conversationId;
-    private String callbackUrl;
+    protected BigDecimal walletPrice = BigDecimal.ZERO;
+
+    protected Integer installment;
+
+    protected CurrencyCode currency;
+
+    protected PaymentGroup paymentGroup;
+
+    protected String conversationId;
+
     @Builder.Default
-    private PaymentPhase paymentPhase = PaymentPhase.AUTH;
-    private Long buyerId;
-    private CardDto card;
-    private List<CreatePaymentItemDto> items;
+    protected PaymentPhase paymentPhase = PaymentPhase.AUTH;
+
+    protected Long buyerId;
+
+    protected CardDto card;
+
+    protected List<CreatePaymentItemDto> items;
 
     @Override
     public String getPath() {
         return "/payment/v1/card-payments";
+    }
+
+    @Override
+    public HttpMethod getMethod() {
+        return HttpMethod.POST;
     }
 }

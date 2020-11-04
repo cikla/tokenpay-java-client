@@ -19,8 +19,7 @@ public class CreatePaymentItemDto {
 
     private BigDecimal price;
 
-    private Long subMerchantMemberId;
+    private Long subMerchantId;
 
-    private BigDecimal subMerchantMemberPrice;
-
+    private BigDecimal subMerchantPrice;
 }

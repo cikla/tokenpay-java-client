@@ -1,6 +1,7 @@
 package com.tokenpay.net;
 
 public enum HttpMethod {
+
     GET,
     POST,
     DELETE,

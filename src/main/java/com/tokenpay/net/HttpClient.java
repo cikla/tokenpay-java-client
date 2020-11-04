@@ -1,6 +1,7 @@
 package com.tokenpay.net;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tokenpay.exception.HttpClientException;
 import com.tokenpay.response.common.Response;
 
@@ -21,12 +22,13 @@ public class HttpClient {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String ACCEPT = "Accept";
     private static final int TIMEOUT = 140000;
+    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
     private HttpClient() {
     }
 
     public static <T> T get(String url, Class<T> responseType) {
-        return exchange(url, GET, new HashMap<String, String>(), null, responseType);
+        return exchange(url, GET, new HashMap<>(), null, responseType);
     }
 
     public static <T> T get(String url, Map<String, String> headers, Object request, Class<T> responseType) {
@@ -45,15 +47,18 @@ public class HttpClient {
         return exchange(url, DELETE, headers, request, responseType);
     }
 
-    private static <T> T exchange(String url, HttpMethod httpMethod, Map<String, String> headers, Object request,
-                                  Class<T> responseType) {
-        Gson gson = new Gson();
+    private static <T> T exchange(String url, HttpMethod httpMethod, Map<String, String> headers, Object request, Class<T> responseType) {
         String body = gson.toJson(request);
         try {
             InputStream content = request == null ? null : new ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET));
             String responseBody = send(url, httpMethod, content, headers);
             Response response = gson.fromJson(responseBody, Response.class);
             // TODO handle errors
+
+            if (responseType == Void.class) {
+                return null;
+            }
+
             return gson.fromJson(response.getData(), responseType);
         } catch (UnsupportedEncodingException e) {
             throw new HttpClientException(e.getMessage(), e);

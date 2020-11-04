@@ -1,26 +1,28 @@
 package com.tokenpay;
 
-import com.tokenpay.adapter.OnboardingAdapter;
 import com.tokenpay.adapter.PaymentAdapter;
+import com.tokenpay.request.common.RequestOptions;
 
 public class TokenPay {
-    public static String baseUrl = "https://api.tokenpay.com.tr";
-    public static String apiKey;
-    public static String secretKey;
 
     private final PaymentAdapter payment;
-    private final OnboardingAdapter onboarding;
+    private static final String baseUrl = "https://api.tokenpay.com.tr";
 
-    public TokenPay() {
-        this.payment = new PaymentAdapter();
-        this.onboarding = new OnboardingAdapter();
+    public TokenPay(String apiKey, String secretKey) {
+        this(apiKey, secretKey, baseUrl);
+    }
+
+    public TokenPay(String apiKey, String secretKey, String baseUrl) {
+        RequestOptions requestOptions = RequestOptions.builder()
+                .apiKey(apiKey)
+                .secretKey(secretKey)
+                .baseUrl(baseUrl)
+                .build();
+
+        this.payment = new PaymentAdapter(requestOptions);
     }
 
     public PaymentAdapter payment() {
         return payment;
-    }
-
-    public OnboardingAdapter onboarding() {
-        return onboarding;
     }
 }
