@@ -22,7 +22,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build -x test
-        uses: actions/upload-artifact@v2
+
+      - name: Upload Jar File
+        uses: actions/upload-artifact@v1
         with:
           name: tokenpay-java.jar
           path: build/libs
