@@ -1,7 +1,7 @@
 package com.tokenpay.request.common;
 
 import com.google.gson.Gson;
-import com.tokenpay.exception.HttpClientException;
+import com.tokenpay.exception.TokenPayException;
 import com.tokenpay.net.HttpMethod;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -29,7 +29,7 @@ public final class HashGenerator {
 
             return Base64.encodeBase64String(DigestUtils.sha256(hashData)).toUpperCase();
         } catch (Exception e) {
-            throw new HttpClientException("Failed to generate hash", e);
+            throw new TokenPayException(e);
         }
     }
 }

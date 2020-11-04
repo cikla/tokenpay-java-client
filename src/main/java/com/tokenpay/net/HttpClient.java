@@ -2,7 +2,6 @@ package com.tokenpay.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tokenpay.exception.HttpClientException;
 import com.tokenpay.exception.TokenPayException;
 import com.tokenpay.response.common.ErrorResponse;
 import com.tokenpay.response.common.Response;
@@ -50,8 +49,8 @@ public class HttpClient {
     }
 
     private static <T> T exchange(String url, HttpMethod httpMethod, Map<String, String> headers, Object request, Class<T> responseType) {
-        String body = gson.toJson(request);
         try {
+            String body = gson.toJson(request);
             InputStream content = request == null ? null : new ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET));
             String responseBody = send(url, httpMethod, content, headers);
             Response response = gson.fromJson(responseBody, Response.class);
@@ -67,11 +66,11 @@ public class HttpClient {
         } catch (TokenPayException e) {
             throw e;
         } catch (Exception e) {
-            throw new HttpClientException(e.getMessage(), e);
+            throw new TokenPayException(e);
         }
     }
 
-    private static String send(String url, HttpMethod httpMethod, InputStream content, Map<String, String> headers) {
+    private static String send(String url, HttpMethod httpMethod, InputStream content, Map<String, String> headers) throws IOException {
         URLConnection raw;
         HttpURLConnection conn = null;
         try {
@@ -92,8 +91,6 @@ public class HttpClient {
             }
 
             return new String(body(conn), StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            throw new HttpClientException(e.getMessage(), e);
         } finally {
             if (conn != null) {
                 conn.disconnect();
