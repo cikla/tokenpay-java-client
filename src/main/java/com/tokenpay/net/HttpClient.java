@@ -113,8 +113,12 @@ public class HttpClient {
     private static void prepareRequestBody(HttpMethod httpMethod, InputStream content, HttpURLConnection conn) throws IOException {
         if (HttpMethod.hasBody(httpMethod)) {
             conn.setDoOutput(true);
-            try (content; OutputStream output = conn.getOutputStream()) {
+            final OutputStream output = conn.getOutputStream();
+            try {
                 prepareOutputStream(content, output);
+            } finally {
+                output.close();
+                content.close();
             }
         }
     }
