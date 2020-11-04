@@ -28,7 +28,7 @@ public class HttpClient {
     }
 
     public static <T> T get(String url, Class<T> responseType) {
-        return exchange(url, GET, new HashMap<>(), null, responseType);
+        return exchange(url, GET, new HashMap<String, String>(), null, responseType);
     }
 
     public static <T> T get(String url, Map<String, String> headers, Object request, Class<T> responseType) {

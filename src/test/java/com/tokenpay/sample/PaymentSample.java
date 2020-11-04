@@ -135,7 +135,7 @@ public class PaymentSample {
     void approve_payment_tx_sample() {
         PaymentTxApprovalRequest request = PaymentTxApprovalRequest.builder()
                 .isTransactional(true)
-                .paymentTransactionIds(new HashSet<>() {{
+                .paymentTransactionIds(  new HashSet<Long>() {{
                     add(1L);
                     add(2L);
                 }})
@@ -149,7 +149,7 @@ public class PaymentSample {
     void disapprove_payment_tx_sample() {
         PaymentTxDisapprovalRequest request = PaymentTxDisapprovalRequest.builder()
                 .isTransactional(true)
-                .paymentTransactionIds(new HashSet<>() {{
+                .paymentTransactionIds(new HashSet<Long>() {{
                     add(1L);
                     add(2L);
                 }})
