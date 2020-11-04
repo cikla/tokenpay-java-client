@@ -56,7 +56,7 @@ public class PaymentSample {
                 .paymentPhase(PaymentPhase.AUTH)
                 .card(CardDto.builder()
                         .cardHolderName("Pharmacy User")
-                        .cardNumber("5406670000000009")
+                        .cardNumber("4102090000000000")
                         .expireYear("2035")
                         .expireMonth("11")
                         .cvc("123")

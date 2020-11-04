@@ -3,6 +3,8 @@ package com.tokenpay.net;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tokenpay.exception.HttpClientException;
+import com.tokenpay.exception.TokenPayException;
+import com.tokenpay.response.common.ErrorResponse;
 import com.tokenpay.response.common.Response;
 
 import java.io.*;
@@ -53,14 +55,18 @@ public class HttpClient {
             InputStream content = request == null ? null : new ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET));
             String responseBody = send(url, httpMethod, content, headers);
             Response response = gson.fromJson(responseBody, Response.class);
-            // TODO handle errors
-
+            if (response.getErrors() != null) {
+                ErrorResponse errors = response.getErrors();
+                throw new TokenPayException(errors.getErrorCode(), errors.getErrorDescription(), errors.getErrorGroup());
+            }
             if (responseType == Void.class) {
                 return null;
             }
 
             return gson.fromJson(response.getData(), responseType);
-        } catch (UnsupportedEncodingException e) {
+        } catch (TokenPayException e) {
+            throw e;
+        } catch (Exception e) {
             throw new HttpClientException(e.getMessage(), e);
         }
     }
