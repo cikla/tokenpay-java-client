@@ -1,11 +1,9 @@
 package com.tokenpay.adapter;
 
 import com.tokenpay.net.HttpClient;
-import com.tokenpay.request.CreateSubMerchantRequest;
-import com.tokenpay.request.RetrieveSubMerchantRequest;
-import com.tokenpay.request.SearchSubMerchantRequest;
-import com.tokenpay.request.UpdateSubMerchantRequest;
+import com.tokenpay.request.*;
 import com.tokenpay.request.common.RequestOptions;
+import com.tokenpay.response.BuyerResponse;
 import com.tokenpay.response.SubMerchantListResponse;
 import com.tokenpay.response.SubMerchantResponse;
 
@@ -53,5 +51,30 @@ public class OnboardingAdapter extends BaseAdapter {
         return retrieveSubMerchant(retrieveSubMerchantRequest, requestOptions);
     }
 
+    public BuyerResponse createBuyer(CreateBuyerRequest createBuyerRequest, RequestOptions options) {
+        return HttpClient.post(options.getBaseUrl() + createBuyerRequest.getPath(), createHeaders(createBuyerRequest, options),
+                createBuyerRequest, BuyerResponse.class);
+    }
 
+    public BuyerResponse createBuyer(CreateBuyerRequest createBuyerRequest) {
+        return createBuyer(createBuyerRequest, requestOptions);
+    }
+
+    public BuyerResponse updateBuyer(UpdateBuyerRequest updateBuyerRequest, RequestOptions options) {
+        return HttpClient.put(options.getBaseUrl() + updateBuyerRequest.getPath(), createHeaders(updateBuyerRequest, options),
+                updateBuyerRequest, BuyerResponse.class);
+    }
+
+    public BuyerResponse updateBuyer(UpdateBuyerRequest updateBuyerRequest) {
+        return updateBuyer(updateBuyerRequest, requestOptions);
+    }
+
+    public BuyerResponse retrieveBuyer(RetrieveBuyerRequest retrieveBuyerRequest, RequestOptions options) {
+        return HttpClient.get(options.getBaseUrl() + retrieveBuyerRequest.getPath(), createHeaders(retrieveBuyerRequest, options),
+                null, BuyerResponse.class);
+    }
+
+    public BuyerResponse retrieveBuyer(RetrieveBuyerRequest retrieveBuyerRequest) {
+        return retrieveBuyer(retrieveBuyerRequest, requestOptions);
+    }
 }

@@ -2,10 +2,8 @@ package com.tokenpay.sample;
 
 import com.tokenpay.TokenPay;
 import com.tokenpay.model.SubMerchantType;
-import com.tokenpay.request.CreateSubMerchantRequest;
-import com.tokenpay.request.RetrieveSubMerchantRequest;
-import com.tokenpay.request.SearchSubMerchantRequest;
-import com.tokenpay.request.UpdateSubMerchantRequest;
+import com.tokenpay.request.*;
+import com.tokenpay.response.BuyerResponse;
 import com.tokenpay.response.SubMerchantListResponse;
 import com.tokenpay.response.SubMerchantResponse;
 import org.junit.jupiter.api.Test;
@@ -75,5 +73,46 @@ public class OnboardingSample {
         SubMerchantListResponse subMerchantListResponse = tokenPay.onboarding().searchSubMerchant(request);
         System.out.println(String.format("Search sub merchant response: %s", subMerchantListResponse));
     }
+
+    @Test
+    void create_buyer_sample() {
+        CreateBuyerRequest request = CreateBuyerRequest.builder()
+                .buyerExternalId("323232")
+                .email("buyer.sample@tokenpay.com.tr")
+                .gsmNumber("905555555555")
+                .name("Buyer Name")
+                .surname("Buyer Surname")
+                .tckn("00000000000")
+                .build();
+
+        BuyerResponse buyerResponse = tokenPay.onboarding().createBuyer(request);
+        System.out.println(String.format("Create buyer response: %s", buyerResponse));
+    }
+
+    @Test
+    void update_buyer_sample() {
+        UpdateBuyerRequest request = UpdateBuyerRequest.builder()
+                .id(3L)
+                .email("buyer.sample@tokenpay.com.tr")
+                .gsmNumber("905555555555")
+                .name("New Buyer Name")
+                .surname("New Buyer Surname")
+                .tckn("00000000000")
+                .build();
+
+        BuyerResponse buyerResponse = tokenPay.onboarding().updateBuyer(request);
+        System.out.println(String.format("Update buyer response: %s", buyerResponse));
+    }
+
+    @Test
+    void retrieve_buyer_sample() {
+        RetrieveBuyerRequest request = RetrieveBuyerRequest.builder()
+                .id(1L)
+                .build();
+
+        BuyerResponse buyerResponse = tokenPay.onboarding().retrieveBuyer(request);
+        System.out.println(String.format("Retrieve buyer response: %s", buyerResponse));
+    }
+
 
 }
