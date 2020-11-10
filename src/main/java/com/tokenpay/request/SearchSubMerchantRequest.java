@@ -8,13 +8,14 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @SuperBuilder
 public class SearchSubMerchantRequest extends BaseRequest {
 
     private String name;
-    private List<Long> subMerchantIds;
+    private Set<Long> subMerchantIds;
     private String subMerchantExternalId;
     private SubMerchantType subMerchantType;
     private Integer page = 0;

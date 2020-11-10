@@ -13,7 +13,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataResponse<T> {
+public class ListResponse<T> {
 
     @Builder.Default
     private List<T> items = new ArrayList<>();
