@@ -1,6 +1,5 @@
 package com.tokenpay.request;
 
-import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -18,14 +17,4 @@ public class CrossBookingSendRequest extends BaseRequest {
     private String currency;
 
     private Long subMerchantId;
-
-    @Override
-    public String getPath() {
-        return "/payment/v1/cross-bookings/send";
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return HttpMethod.POST;
-    }
 }

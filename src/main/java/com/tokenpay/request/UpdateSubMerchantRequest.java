@@ -1,6 +1,5 @@
 package com.tokenpay.request;
 
-import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -26,14 +25,4 @@ public class UpdateSubMerchantRequest extends BaseRequest {
     private String contactSurname;
     private String identityNumber;
     private String legalCompanyTitle;
-
-    @Override
-    public String getPath() {
-        return "/onboarding/v1/sub-merchants";
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return HttpMethod.PUT;
-    }
 }

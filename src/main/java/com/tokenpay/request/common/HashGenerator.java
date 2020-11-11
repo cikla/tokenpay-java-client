@@ -2,7 +2,6 @@ package com.tokenpay.request.common;
 
 import com.google.gson.Gson;
 import com.tokenpay.exception.TokenPayException;
-import com.tokenpay.net.HttpMethod;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,12 +13,12 @@ public final class HashGenerator {
     private HashGenerator() {
     }
 
-    public static String generateHash(String baseUrl, String apiKey, String secretKey, String randomString, BaseRequest request) {
+    public static String generateHash(String baseUrl, String apiKey, String secretKey, String randomString, BaseRequest request, String path) {
         try {
             String hashData = "";
-            String decodedUrl = URLDecoder.decode(baseUrl + request.getPath(), StandardCharsets.UTF_8.toString());
+            String decodedUrl = URLDecoder.decode(baseUrl + path, StandardCharsets.UTF_8.toString());
 
-            if (request.getMethod() != HttpMethod.GET) {
+            if (request != null) {
                 Gson gson = new Gson();
                 String requestBody = gson.toJson(request);
                 hashData = decodedUrl + apiKey + secretKey + randomString + requestBody;

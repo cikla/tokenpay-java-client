@@ -3,7 +3,6 @@ package com.tokenpay.request;
 import com.tokenpay.model.CurrencyCode;
 import com.tokenpay.model.PaymentGroup;
 import com.tokenpay.model.PaymentPhase;
-import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import com.tokenpay.request.dto.CardDto;
 import com.tokenpay.request.dto.CreatePaymentItemDto;
@@ -41,14 +40,4 @@ public class CreatePaymentRequest extends BaseRequest {
     protected CardDto card;
 
     protected List<CreatePaymentItemDto> items;
-
-    @Override
-    public String getPath() {
-        return "/payment/v1/card-payments";
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return HttpMethod.POST;
-    }
 }

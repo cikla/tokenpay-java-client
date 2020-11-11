@@ -3,6 +3,7 @@ package com.tokenpay.adapter;
 import com.tokenpay.net.HttpClient;
 import com.tokenpay.request.*;
 import com.tokenpay.request.common.RequestOptions;
+import com.tokenpay.request.common.RequestQueryParamsBuilder;
 import com.tokenpay.response.*;
 
 public class PaymentAdapter extends BaseAdapter {
@@ -13,174 +14,114 @@ public class PaymentAdapter extends BaseAdapter {
         this.requestOptions = requestOptions;
     }
 
-    public PaymentResponse createPayment(CreatePaymentRequest createPaymentRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createPaymentRequest.getPath(), createHeaders(createPaymentRequest, options),
+    public PaymentResponse createPayment(CreatePaymentRequest createPaymentRequest) {
+        String path = "/payment/v1/card-payments";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(createPaymentRequest, path, requestOptions),
                 createPaymentRequest, PaymentResponse.class);
     }
 
-    public PaymentResponse createPayment(CreatePaymentRequest createPaymentRequest) {
-        return createPayment(createPaymentRequest, requestOptions);
-    }
-
-    public ThreeDSInitResponse init3DSPayment(InitThreeDSPaymentRequest initThreeDSPaymentRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + initThreeDSPaymentRequest.getPath(), createHeaders(initThreeDSPaymentRequest, options),
+    public ThreeDSInitResponse init3DSPayment(InitThreeDSPaymentRequest initThreeDSPaymentRequest) {
+        String path = "/payment/v1/card-payments/3ds-init";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(initThreeDSPaymentRequest, path, requestOptions),
                 initThreeDSPaymentRequest, ThreeDSInitResponse.class);
     }
 
-    public ThreeDSInitResponse init3DSPayment(InitThreeDSPaymentRequest initThreeDSPaymentRequest) {
-        return init3DSPayment(initThreeDSPaymentRequest, requestOptions);
-    }
-
-    public PaymentResponse complete3DSPayment(CompleteThreeDSRequest completeThreeDSRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + completeThreeDSRequest.getPath(), createHeaders(completeThreeDSRequest, options),
+    public PaymentResponse complete3DSPayment(CompleteThreeDSRequest completeThreeDSRequest) {
+        String path = "/payment/v1/card-payments/3ds-complete";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(completeThreeDSRequest, path, requestOptions),
                 completeThreeDSRequest, PaymentResponse.class);
     }
 
-    public PaymentResponse complete3DSPayment(CompleteThreeDSRequest completeThreeDSRequest) {
-        return complete3DSPayment(completeThreeDSRequest, requestOptions);
-    }
-
-    public PaymentTxApprovalListResponse paymentTransactionApprove(PaymentTxApprovalRequest paymentTxApprovalRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + paymentTxApprovalRequest.getPath(), createHeaders(paymentTxApprovalRequest, options),
+    public PaymentTxApprovalListResponse paymentTransactionApprove(PaymentTxApprovalRequest paymentTxApprovalRequest) {
+        String path = "/payment/v1/payment-transactions/approve";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(paymentTxApprovalRequest, path, requestOptions),
                 paymentTxApprovalRequest, PaymentTxApprovalListResponse.class);
     }
 
-    public PaymentTxApprovalListResponse paymentTransactionApprove(PaymentTxApprovalRequest paymentTxApprovalRequest) {
-        return paymentTransactionApprove(paymentTxApprovalRequest, requestOptions);
-    }
-
-    public PaymentTxApprovalListResponse paymentTransactionDisapprove(PaymentTxDisapprovalRequest paymentTxDisapprovalRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + paymentTxDisapprovalRequest.getPath(), createHeaders(paymentTxDisapprovalRequest, options),
+    public PaymentTxApprovalListResponse paymentTransactionDisapprove(PaymentTxDisapprovalRequest paymentTxDisapprovalRequest) {
+        String path = "/payment/v1/payment-transactions/disapprove";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(paymentTxDisapprovalRequest, path, requestOptions),
                 paymentTxDisapprovalRequest, PaymentTxApprovalListResponse.class);
     }
 
-    public PaymentTxApprovalListResponse paymentTransactionDisapprove(PaymentTxDisapprovalRequest paymentTxDisapprovalRequest) {
-        return paymentTransactionDisapprove(paymentTxDisapprovalRequest, requestOptions);
-    }
-
-    public RefundResponse createRefund(CreateRefundRequest createRefundRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createRefundRequest.getPath(), createHeaders(createRefundRequest, options),
+    public RefundResponse createRefund(CreateRefundRequest createRefundRequest) {
+        String path = "/payment/v1/refunds";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(createRefundRequest, path, requestOptions),
                 createRefundRequest, RefundResponse.class);
     }
 
-    public RefundResponse createRefund(CreateRefundRequest createRefundRequest) {
-        return createRefund(createRefundRequest, requestOptions);
-    }
-
-    public RefundResponse retrieveRefund(RetrieveRefundRequest retrieveRefundRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + retrieveRefundRequest.getPath(), createHeaders(retrieveRefundRequest, options),
-                retrieveRefundRequest, RefundResponse.class);
-    }
-
     public RefundResponse retrieveRefund(RetrieveRefundRequest retrieveRefundRequest) {
-        return retrieveRefund(retrieveRefundRequest, requestOptions);
-    }
-
-    public RefundTxResponse createRefundTx(CreateRefundTxRequest createRefundTxRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createRefundTxRequest.getPath(), createHeaders(createRefundTxRequest, options),
-                createRefundTxRequest, RefundTxResponse.class);
+        String path = "/payment/v1/refunds/" + retrieveRefundRequest.getId();
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), RefundResponse.class);
     }
 
     public RefundTxResponse createRefundTx(CreateRefundTxRequest createRefundTxRequest) {
-        return createRefundTx(createRefundTxRequest, requestOptions);
-    }
-
-    public RefundTxResponse retrieveRefundTx(RetrieveRefundTxRequest retrieveRefundTxRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + retrieveRefundTxRequest.getPath(), createHeaders(retrieveRefundTxRequest, options),
-                retrieveRefundTxRequest, RefundTxResponse.class);
+        String path = "/payment/v1/refund-transactions";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(createRefundTxRequest, path, requestOptions),
+                createRefundTxRequest, RefundTxResponse.class);
     }
 
     public RefundTxResponse retrieveRefundTx(RetrieveRefundTxRequest retrieveRefundTxRequest) {
-        return retrieveRefundTx(retrieveRefundTxRequest, requestOptions);
-    }
-
-    public RefundTxListResponse searchRefundTx(SearchRefundTxRequest searchRefundTxRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + searchRefundTxRequest.getPath(), createHeaders(searchRefundTxRequest, options),
-                searchRefundTxRequest, RefundTxListResponse.class);
+        String path = "/payment/v1/refund-transactions/" + retrieveRefundTxRequest.getId();
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), RefundTxResponse.class);
     }
 
     public RefundTxListResponse searchRefundTx(SearchRefundTxRequest searchRefundTxRequest) {
-        return searchRefundTx(searchRefundTxRequest, requestOptions);
-    }
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchRefundTxRequest);
+        String path = "/payment/v1/refund-transactions" + query;
 
-    public PaymentResponse retrievePayment(RetrievePaymentRequest retrievePaymentRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + retrievePaymentRequest.getPath(), createHeaders(retrievePaymentRequest, options),
-                retrievePaymentRequest, PaymentResponse.class);
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), RefundTxListResponse.class);
     }
 
     public PaymentResponse retrievePayment(RetrievePaymentRequest retrievePaymentRequest) {
-        return retrievePayment(retrievePaymentRequest, requestOptions);
-    }
-
-    public PaymentListResponse searchPayment(SearchPaymentRequest searchPaymentRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + searchPaymentRequest.getPath(), createHeaders(searchPaymentRequest, options),
-                searchPaymentRequest, PaymentListResponse.class);
+        String path = "/payment/v1/card-payments/" + retrievePaymentRequest.getId();
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), PaymentResponse.class);
     }
 
     public PaymentListResponse searchPayment(SearchPaymentRequest searchPaymentRequest) {
-        return searchPayment(searchPaymentRequest, requestOptions);
-    }
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchPaymentRequest);
+        String path = "/payment/v1/card-payments" + query;
 
-    public CrossBookingTransactionResponse crossBookingSend(CrossBookingSendRequest crossBookingSendRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + crossBookingSendRequest.getPath(), createHeaders(crossBookingSendRequest, options),
-                crossBookingSendRequest, CrossBookingTransactionResponse.class);
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), PaymentListResponse.class);
     }
 
     public CrossBookingTransactionResponse crossBookingSend(CrossBookingSendRequest crossBookingSendRequest) {
-        return crossBookingSend(crossBookingSendRequest, requestOptions);
-    }
-
-    public CrossBookingTransactionResponse crossBookingReceive(CrossBookingReceiveRequest crossBookingReceiveRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + crossBookingReceiveRequest.getPath(), createHeaders(crossBookingReceiveRequest, options),
-                crossBookingReceiveRequest, CrossBookingTransactionResponse.class);
+        String path = "/payment/v1/cross-bookings/send";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(crossBookingSendRequest, path, requestOptions),
+                crossBookingSendRequest, CrossBookingTransactionResponse.class);
     }
 
     public CrossBookingTransactionResponse crossBookingReceive(CrossBookingReceiveRequest crossBookingReceiveRequest) {
-        return crossBookingReceive(crossBookingReceiveRequest, requestOptions);
-    }
-
-    public CrossBookingTransactionResponse crossBookingCancel(CrossBookingCancelRequest crossBookingCancelRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + crossBookingCancelRequest.getPath(), createHeaders(crossBookingCancelRequest, options),
-                crossBookingCancelRequest, CrossBookingTransactionResponse.class);
+        String path = "/payment/v1/cross-bookings/receive";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(crossBookingReceiveRequest, path, requestOptions),
+                crossBookingReceiveRequest, CrossBookingTransactionResponse.class);
     }
 
     public CrossBookingTransactionResponse crossBookingCancel(CrossBookingCancelRequest crossBookingCancelRequest) {
-        return crossBookingCancel(crossBookingCancelRequest, requestOptions);
-    }
-
-    public CrossBookingTransactionListResponse searchCrossBooking(SearchCrossBookingRequest searchCrossBookingRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + searchCrossBookingRequest.getPath(), createHeaders(searchCrossBookingRequest, options),
-                searchCrossBookingRequest, CrossBookingTransactionListResponse.class);
+        String path = "/payment/v1/cross-bookings/cancel";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(crossBookingCancelRequest, path, requestOptions),
+                crossBookingCancelRequest, CrossBookingTransactionResponse.class);
     }
 
     public CrossBookingTransactionListResponse searchCrossBooking(SearchCrossBookingRequest searchCrossBookingRequest) {
-        return searchCrossBooking(searchCrossBookingRequest, requestOptions);
-    }
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchCrossBookingRequest);
+        String path = "/payment/v1/cross-bookings" + query;
 
-    public CardResponse createCard(CreateCardRequest createCardRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createCardRequest.getPath(), createHeaders(createCardRequest, options),
-                createCardRequest, CardResponse.class);
-    }
-
-    public CardResponse createCard(CreateCardRequest createCardRequest) {
-        return createCard(createCardRequest, requestOptions);
-    }
-
-    public Void deleteCard(DeleteCardRequest deleteCardRequest, RequestOptions options) {
-        return HttpClient.delete(options.getBaseUrl() + deleteCardRequest.getPath(), createHeaders(deleteCardRequest, options),
-                deleteCardRequest, Void.class);
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), CrossBookingTransactionListResponse.class);
     }
 
     public Void deleteCard(DeleteCardRequest deleteCardRequest) {
-        return deleteCard(deleteCardRequest, requestOptions);
-    }
+        String query = RequestQueryParamsBuilder.buildQueryParam(deleteCardRequest);
+        String path = "/payment/v1/cards" + query;
 
-    public CardListResponse searchCard(SearchCardRequest searchCardRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + searchCardRequest.getPath(), createHeaders(searchCardRequest, options),
-                searchCardRequest, CardListResponse.class);
+        return HttpClient.delete(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions),
+                deleteCardRequest, Void.class);
     }
 
     public CardListResponse searchCard(SearchCardRequest searchCardRequest) {
-        return searchCard(searchCardRequest, requestOptions);
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchCardRequest);
+        String path = "/payment/v1/cards" + query;
+
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), CardListResponse.class);
     }
 }

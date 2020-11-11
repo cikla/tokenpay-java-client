@@ -32,5 +32,4 @@ public class InstallmentSample {
         InstallmentListResponse installmentListResponse = tokenPay.installment().retrieveInstallments(request);
         System.out.println(String.format("Installment list response: %s", installmentListResponse));
     }
-
 }

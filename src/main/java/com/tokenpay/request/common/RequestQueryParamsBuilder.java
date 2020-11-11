@@ -1,12 +1,13 @@
 package com.tokenpay.request.common;
 
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Data
 public class RequestQueryParamsBuilder {
@@ -17,35 +18,40 @@ public class RequestQueryParamsBuilder {
         return new RequestQueryParamsBuilder();
     }
 
-    public RequestQueryParamsBuilder add(String paramName, Object value) {
-        if (query == null && Objects.nonNull(value)) {
-            query = "?";
-        }
+    public static String buildQueryParam(Object object) {
+        try {
+            Field[] fields = object.getClass().getDeclaredFields();
 
-        if (Objects.nonNull(value)) {
-            value = formatValue(value);
-            query += paramName + "=" + value + "&";
-        }
+            StringBuilder query = new StringBuilder(fields.length > 0 ? "?" : "");
 
-        return this;
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object value = field.get(object);
+
+                if (Objects.nonNull(value)) {
+                    query.append(field.getName()).append("=").append(formatValue(value)).append("&");
+                }
+
+            }
+
+            return query.toString();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
-    private String formatValue(Object value) {
+    private static String formatValue(Object value) {
         if (value instanceof Date) return formatDateValue((Date) value);
         if (value instanceof List) return formatListValue((List) value);
         return value.toString();
     }
 
-    private String formatDateValue(Date date) {
+    private static String formatDateValue(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         return formatter.format(date);
     }
 
-    private String formatListValue(List value) {
-        return StringUtils.join(value, ",");
-    }
-
-    public String getQuery() {
-        return StringUtils.isEmpty(query) ? StringUtils.EMPTY : query;
+    private static String formatListValue(List<Object> value) {
+        return value.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 }

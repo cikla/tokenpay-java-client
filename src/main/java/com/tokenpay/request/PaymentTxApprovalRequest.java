@@ -1,6 +1,5 @@
 package com.tokenpay.request;
 
-import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import lombok.Builder;
 import lombok.Data;
@@ -16,14 +15,4 @@ public class PaymentTxApprovalRequest extends BaseRequest {
 
     @Builder.Default
     private Boolean isTransactional = false;
-
-    @Override
-    public String getPath() {
-        return "/payment/v1/payment-transactions/approve";
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return HttpMethod.POST;
-    }
 }

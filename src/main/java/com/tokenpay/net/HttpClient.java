@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.tokenpay.net.HttpMethod.*;
@@ -29,12 +28,8 @@ public class HttpClient {
     private HttpClient() {
     }
 
-    public static <T> T get(String url, Class<T> responseType) {
-        return exchange(url, GET, new HashMap<>(), null, responseType);
-    }
-
-    public static <T> T get(String url, Map<String, String> headers, Object request, Class<T> responseType) {
-        return exchange(url, GET, headers, request, responseType);
+    public static <T> T get(String url, Map<String, String> headers, Class<T> responseType) {
+        return exchange(url, GET, headers, null, responseType);
     }
 
     public static <T> T post(String url, Map<String, String> headers, Object request, Class<T> responseType) {

@@ -56,7 +56,7 @@ public class PaymentSample {
                 .paymentPhase(PaymentPhase.AUTH)
                 .card(CardDto.builder()
                         .cardHolderName("Pharmacy User")
-                        .cardNumber("4102090000000000")
+                        .cardNumber("5406670000000009")
                         .expireYear("2035")
                         .expireMonth("11")
                         .cvc("123")
@@ -135,7 +135,7 @@ public class PaymentSample {
     void approve_payment_tx_sample() {
         PaymentTxApprovalRequest request = PaymentTxApprovalRequest.builder()
                 .isTransactional(true)
-                .paymentTransactionIds(  new HashSet<Long>() {{
+                .paymentTransactionIds(new HashSet<Long>() {{
                     add(1L);
                     add(2L);
                 }})
@@ -276,20 +276,6 @@ public class PaymentSample {
 
         CrossBookingTransactionListResponse crossBookingTransactionListResponse = tokenPay.payment().searchCrossBooking(request);
         System.out.println(String.format("Cross Booking Search Result: %s", crossBookingTransactionListResponse));
-    }
-
-    @Test
-    void create_card_sample() {
-        CreateCardRequest request = CreateCardRequest.builder()
-                .cardHolderName("John Doe")
-                .cardNumber("5437710000000006")
-                .expireYear("2022")
-                .expireMonth("04")
-                .cardAlias("my bank card")
-                .build();
-
-        CardResponse cardResponse = tokenPay.payment().createCard(request);
-        System.out.println(String.format("Create Card Result: %s", cardResponse));
     }
 
     @Test

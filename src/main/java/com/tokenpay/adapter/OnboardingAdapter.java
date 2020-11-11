@@ -3,6 +3,7 @@ package com.tokenpay.adapter;
 import com.tokenpay.net.HttpClient;
 import com.tokenpay.request.*;
 import com.tokenpay.request.common.RequestOptions;
+import com.tokenpay.request.common.RequestQueryParamsBuilder;
 import com.tokenpay.response.BuyerResponse;
 import com.tokenpay.response.SubMerchantListResponse;
 import com.tokenpay.response.SubMerchantResponse;
@@ -15,66 +16,44 @@ public class OnboardingAdapter extends BaseAdapter {
         this.requestOptions = requestOptions;
     }
 
-    public SubMerchantResponse createSubMerchant(CreateSubMerchantRequest createSubMerchantRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createSubMerchantRequest.getPath(), createHeaders(createSubMerchantRequest, options),
+    public SubMerchantResponse createSubMerchant(CreateSubMerchantRequest createSubMerchantRequest) {
+        String path = "/onboarding/v1/sub-merchants";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(createSubMerchantRequest, path, requestOptions),
                 createSubMerchantRequest, SubMerchantResponse.class);
     }
 
-    public SubMerchantResponse createSubMerchant(CreateSubMerchantRequest createSubMerchantRequest) {
-        return createSubMerchant(createSubMerchantRequest, requestOptions);
-    }
-
-    public SubMerchantResponse updateSubMerchant(UpdateSubMerchantRequest updateSubMerchantRequest, RequestOptions options) {
-        return HttpClient.put(options.getBaseUrl() + updateSubMerchantRequest.getPath(), createHeaders(updateSubMerchantRequest, options),
+    public SubMerchantResponse updateSubMerchant(UpdateSubMerchantRequest updateSubMerchantRequest) {
+        String path = "/onboarding/v1/sub-merchants";
+        return HttpClient.put(requestOptions.getBaseUrl() + path, createHeaders(updateSubMerchantRequest, path, requestOptions),
                 updateSubMerchantRequest, SubMerchantResponse.class);
     }
 
-    public SubMerchantResponse updateSubMerchant(UpdateSubMerchantRequest updateSubMerchantRequest) {
-        return updateSubMerchant(updateSubMerchantRequest, requestOptions);
-    }
-
-    public SubMerchantListResponse searchSubMerchant(SearchSubMerchantRequest searchSubMerchantRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + searchSubMerchantRequest.getPath(), createHeaders(searchSubMerchantRequest, options),
-                null, SubMerchantListResponse.class);
-    }
-
     public SubMerchantListResponse searchSubMerchant(SearchSubMerchantRequest searchSubMerchantRequest) {
-        return searchSubMerchant(searchSubMerchantRequest, requestOptions);
-    }
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchSubMerchantRequest);
+        String path = "/onboarding/v1/sub-merchants" + query;
 
-    public SubMerchantResponse retrieveSubMerchant(RetrieveSubMerchantRequest retrieveSubMerchantRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + retrieveSubMerchantRequest.getPath(), createHeaders(retrieveSubMerchantRequest, options),
-                null, SubMerchantResponse.class);
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), SubMerchantListResponse.class);
     }
 
     public SubMerchantResponse retrieveSubMerchant(RetrieveSubMerchantRequest retrieveSubMerchantRequest) {
-        return retrieveSubMerchant(retrieveSubMerchantRequest, requestOptions);
-    }
-
-    public BuyerResponse createBuyer(CreateBuyerRequest createBuyerRequest, RequestOptions options) {
-        return HttpClient.post(options.getBaseUrl() + createBuyerRequest.getPath(), createHeaders(createBuyerRequest, options),
-                createBuyerRequest, BuyerResponse.class);
+        String path = "/onboarding/v1/sub-merchants/" + retrieveSubMerchantRequest.getId();
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), SubMerchantResponse.class);
     }
 
     public BuyerResponse createBuyer(CreateBuyerRequest createBuyerRequest) {
-        return createBuyer(createBuyerRequest, requestOptions);
-    }
-
-    public BuyerResponse updateBuyer(UpdateBuyerRequest updateBuyerRequest, RequestOptions options) {
-        return HttpClient.put(options.getBaseUrl() + updateBuyerRequest.getPath(), createHeaders(updateBuyerRequest, options),
-                updateBuyerRequest, BuyerResponse.class);
+        String path = "/onboarding/v1/buyers";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(createBuyerRequest, path, requestOptions),
+                createBuyerRequest, BuyerResponse.class);
     }
 
     public BuyerResponse updateBuyer(UpdateBuyerRequest updateBuyerRequest) {
-        return updateBuyer(updateBuyerRequest, requestOptions);
-    }
-
-    public BuyerResponse retrieveBuyer(RetrieveBuyerRequest retrieveBuyerRequest, RequestOptions options) {
-        return HttpClient.get(options.getBaseUrl() + retrieveBuyerRequest.getPath(), createHeaders(retrieveBuyerRequest, options),
-                null, BuyerResponse.class);
+        String path = "/onboarding/v1/buyers/" + updateBuyerRequest.getId();
+        return HttpClient.put(requestOptions.getBaseUrl() + path, createHeaders(updateBuyerRequest, path, requestOptions),
+                updateBuyerRequest, BuyerResponse.class);
     }
 
     public BuyerResponse retrieveBuyer(RetrieveBuyerRequest retrieveBuyerRequest) {
-        return retrieveBuyer(retrieveBuyerRequest, requestOptions);
+        String path = "/onboarding/v1/buyers/" + retrieveBuyerRequest.getId();
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), BuyerResponse.class);
     }
 }

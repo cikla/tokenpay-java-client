@@ -1,7 +1,6 @@
 package com.tokenpay.request;
 
 import com.tokenpay.model.RefundDestinationType;
-import com.tokenpay.net.HttpMethod;
 import com.tokenpay.request.common.BaseRequest;
 import lombok.Builder;
 import lombok.Data;
@@ -17,14 +16,4 @@ public class CreateRefundRequest extends BaseRequest {
 
     @Builder.Default
     private RefundDestinationType refundDestinationType = RefundDestinationType.CARD;
-
-    @Override
-    public String getPath() {
-        return "/payment/v1/refunds";
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return HttpMethod.POST;
-    }
 }
