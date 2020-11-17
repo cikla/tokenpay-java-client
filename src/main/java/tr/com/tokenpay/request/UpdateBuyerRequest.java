@@ -16,7 +16,7 @@ public class UpdateBuyerRequest extends BaseRequest {
 
     private String surname;
 
-    private String tckn;
+    private String identityNumber;
 
     private String gsmNumber;
 

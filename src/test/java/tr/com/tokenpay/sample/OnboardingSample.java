@@ -84,7 +84,7 @@ public class OnboardingSample {
                 .gsmNumber("905555555555")
                 .name("Buyer Name")
                 .surname("Buyer Surname")
-                .tckn("00000000000")
+                .identityNumber("00000000000")
                 .build();
 
         BuyerResponse buyerResponse = tokenPay.onboarding().createBuyer(request);
@@ -99,7 +99,7 @@ public class OnboardingSample {
                 .gsmNumber("905555555555")
                 .name("New Buyer Name")
                 .surname("New Buyer Surname")
-                .tckn("00000000000")
+                .identityNumber("00000000000")
                 .build();
 
         BuyerResponse buyerResponse = tokenPay.onboarding().updateBuyer(request);

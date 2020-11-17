@@ -16,7 +16,7 @@ public class CreateBuyerRequest extends BaseRequest {
 
     private String gsmNumber;
 
-    private String tckn;
+    private String identityNumber;
 
     private String buyerExternalId;
 }

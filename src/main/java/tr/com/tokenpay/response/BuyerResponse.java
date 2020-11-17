@@ -9,7 +9,7 @@ public class BuyerResponse {
     private Long id;
     private Status status;
     private String email;
-    private String tckn;
+    private String identityNumber;
     private String name;
     private String surname;
     private String gsmNumber;
