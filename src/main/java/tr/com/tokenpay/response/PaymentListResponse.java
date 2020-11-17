@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class PaymentListResponse {
 
-    private Long size;
-    private List<PaymentResponse> items;
+    private Integer page;
+    private Integer size;
+    private Long totalSize;
+    private List<PaymentDetailResponse> items;
 }

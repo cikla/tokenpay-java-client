@@ -1,31 +1,36 @@
 package tr.com.tokenpay.response.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tr.com.tokenpay.model.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
-public class CardPaymentTxDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PaymentTxDto {
 
     private Long id;
+    private LocalDateTime createdDate;
     private String externalId;
-    private String name;
+    private TransactionStatus transactionStatus;
+    private LocalDateTime transactionStatusDate;
     private BigDecimal price;
     private BigDecimal paidPrice;
     private BigDecimal walletPrice;
-    private BigDecimal merchantCommissionRate;
-    private BigDecimal merchantCommissionRateAmount;
     private BigDecimal merchantPayoutAmount;
     private Long subMerchantId;
+    private String subMerchantName;
     private BigDecimal subMerchantPrice;
     private BigDecimal subMerchantPayoutRate;
     private BigDecimal subMerchantPayoutAmount;
-    private BigDecimal pfCommissionRateAmount;
-    private TransactionStatus transactionStatus;
-    private LocalDateTime blockageResolvedDate;
     private ConvertedPaymentTxPayoutDto convertedPayout;
+    private PaymentTxCardDto paymentTxCard;
+    private List<PaymentTxRefundDto> paymentTxRefunds;
 }

@@ -6,7 +6,7 @@ import tr.com.tokenpay.model.RefundStatus;
 import tr.com.tokenpay.model.RefundType;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,7 +14,7 @@ public class RefundResponse {
 
     private Long id;
     private String conversationId;
-    private Date createdDate;
+    private LocalDateTime createdDate;
     private RefundStatus status;
     private BigDecimal refundPrice;
     private BigDecimal refundBankPrice;

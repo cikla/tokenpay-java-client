@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 @Data
 @Builder
@@ -13,6 +14,7 @@ public class ConvertedPaymentTxPayoutDto {
     private String currency;
     private BigDecimal merchantPayoutAmount;
     private BigDecimal subMerchantPayoutAmount;
+    private BigDecimal pfConversionRate;
     private BigDecimal pfCommissionRateAmount;
     private BigDecimal pfConversionRateAmount;
 }

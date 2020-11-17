@@ -73,14 +73,14 @@ public class PaymentAdapter extends BaseAdapter {
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), RefundTxListResponse.class);
     }
 
-    public PaymentResponse retrievePayment(RetrievePaymentRequest retrievePaymentRequest) {
-        String path = "/payment/v1/card-payments/" + retrievePaymentRequest.getId();
-        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), PaymentResponse.class);
+    public PaymentDetailResponse retrievePayment(Long id) {
+        String path = "/payment-reporting/v1/payments/" + id;
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), PaymentDetailResponse.class);
     }
 
     public PaymentListResponse searchPayment(SearchPaymentRequest searchPaymentRequest) {
         String query = RequestQueryParamsBuilder.buildQueryParam(searchPaymentRequest);
-        String path = "/payment/v1/card-payments" + query;
+        String path = "/payment-reporting/v1/payments" + query;
 
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), PaymentListResponse.class);
     }

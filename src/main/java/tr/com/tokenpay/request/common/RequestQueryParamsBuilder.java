@@ -4,9 +4,9 @@ import lombok.Data;
 
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 @Data
 public class RequestQueryParamsBuilder {
 
-    public static RequestQueryParamsBuilder builder() {
-        return new RequestQueryParamsBuilder();
-    }
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static final String EMPTY = "";
+    private static final String PLUS_CHAR = "+";
+    private static final String PLUS_REPLACEMENT_CHAR = "%20";
 
     public static String buildQueryParam(Object object) {
         try {
             Field[] fields = object.getClass().getDeclaredFields();
-
             StringBuilder query = new StringBuilder(fields.length > 0 ? "?" : "");
 
             for (Field field : fields) {
@@ -33,21 +33,20 @@ public class RequestQueryParamsBuilder {
                 }
             }
 
-            return query.toString().replace("+", "%20");
+            return query.toString().replace(PLUS_CHAR, PLUS_REPLACEMENT_CHAR);
         } catch (Exception e) {
-            return "";
+            return EMPTY;
         }
     }
 
     private static String formatValue(Object value) {
-        if (value instanceof Date) return formatDateValue((Date) value);
+        if (value instanceof LocalDateTime) return formatDateValue((LocalDateTime) value);
         if (value instanceof List) return formatListValue((List) value);
         return value.toString();
     }
 
-    private static String formatDateValue(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        return formatter.format(date);
+    private static String formatDateValue(LocalDateTime date) {
+        return DATE_TIME_FORMATTER.format(date);
     }
 
     private static String formatListValue(List<Object> value) {

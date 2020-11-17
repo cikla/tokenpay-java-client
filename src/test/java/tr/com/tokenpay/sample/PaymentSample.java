@@ -214,17 +214,15 @@ public class PaymentSample {
 
     @Test
     void retrieve_payment_sample() {
-        RetrievePaymentRequest request = RetrievePaymentRequest.builder()
-                .id(1L)
-                .build();
-
-        PaymentResponse paymentResponse = tokenPay.payment().retrievePayment(request);
+        PaymentDetailResponse paymentResponse = tokenPay.payment().retrievePayment(1L);
         System.out.println(String.format("Retrieve Payment Result: %s", paymentResponse));
     }
 
     @Test
     void search_payment_sample() {
         SearchPaymentRequest request = SearchPaymentRequest.builder()
+                .currency(CurrencyCode.TRY)
+                .paymentStatus(PaymentStatus.SUCCESS)
                 .build();
 
         PaymentListResponse paymentListResponse = tokenPay.payment().searchPayment(request);

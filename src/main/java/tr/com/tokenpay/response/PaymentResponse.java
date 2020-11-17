@@ -5,14 +5,14 @@ import tr.com.tokenpay.model.*;
 import tr.com.tokenpay.response.dto.CardPaymentTxDto;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class PaymentResponse {
 
     private Long id;
-    private Date createdDate;
+    private LocalDateTime createdDate;
     private BigDecimal price;
     private BigDecimal paidPrice;
     private BigDecimal walletPrice;

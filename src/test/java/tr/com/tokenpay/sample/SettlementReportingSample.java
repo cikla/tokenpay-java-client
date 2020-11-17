@@ -10,6 +10,7 @@ import tr.com.tokenpay.response.PayoutCompletedTxListResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 public class SettlementReportingSample {
 
@@ -17,11 +18,9 @@ public class SettlementReportingSample {
 
     @Test
     void retrieve_bounced_sub_merchant_rows_sample() throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
         BouncedSubMerchantRowRequest request = BouncedSubMerchantRowRequest.builder()
-                .startDate((formatter.parse("2020-02-28T00:00:00")))
-                .endDate((formatter.parse("2020-11-28T23:59:59")))
+                .startDate(LocalDateTime.of(2020, 02, 28, 00, 00, 00))
+                .endDate(LocalDateTime.of(2020, 11, 28, 23, 59, 59))
                 .build();
 
         BouncedSubMerchantRowListResponse bouncedSubMerchantRowListResponse = tokenPay.settlementReporting().retrieveBouncedSubMerchantRows(request);
@@ -32,8 +31,8 @@ public class SettlementReportingSample {
     void retrieve_payout_completed_transactions() throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         PayoutCompletedTxRequest request = PayoutCompletedTxRequest.builder()
-                .startDate((formatter.parse("2020-02-28T00:00:00")))
-                .endDate((formatter.parse("2020-11-04T23:59:59")))
+                .startDate(LocalDateTime.of(2020, 02, 28, 00, 00, 00))
+                .endDate(LocalDateTime.of(2020, 11, 04, 23, 59, 59))
                 .settlementFileId(1L)
                 .settlementType(SettlementType.SETTLEMENT)
                 .build();

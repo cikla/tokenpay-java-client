@@ -2,6 +2,7 @@ package tr.com.tokenpay.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import tr.com.tokenpay.exception.TokenPayException;
 import tr.com.tokenpay.response.common.ErrorResponse;
 import tr.com.tokenpay.response.common.Response;
@@ -11,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class HttpClient {
@@ -21,7 +23,7 @@ public class HttpClient {
     private static final String ACCEPT = "Accept";
     private static final int CONNECT_TIMEOUT = 15000;
     private static final int READ_TIMEOUT = 140000;
-    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+    private static final Gson gson = buildGson();
 
     private HttpClient() {
     }
@@ -149,5 +151,11 @@ public class HttpClient {
             }
         }
         return body;
+    }
+
+    private static Gson buildGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString()))
+                .create();
     }
 }

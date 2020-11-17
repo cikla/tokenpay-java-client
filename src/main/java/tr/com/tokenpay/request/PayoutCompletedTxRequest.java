@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 import tr.com.tokenpay.model.SettlementType;
 import tr.com.tokenpay.request.common.BaseRequest;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @SuperBuilder
@@ -15,7 +15,7 @@ public class PayoutCompletedTxRequest extends BaseRequest {
 
     private SettlementType settlementType;
 
-    private Date startDate;
+    private LocalDateTime startDate;
 
-    private Date endDate;
+    private LocalDateTime endDate;
 }
