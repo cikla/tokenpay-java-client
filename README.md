@@ -1,4 +1,7 @@
 # TokenPay Java Client
+
+[![Build Status](https://github.com/TokenPayEng/tokenpay-java-client/workflows/TokenPay%20Java%20CI/badge.svg)](https://github.com/TokenPayEng/tokenpay-java-client/actions)
+
 This repo contains the Java client for TokenPay API.
 
 ## Requirements
