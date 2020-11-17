@@ -69,6 +69,7 @@ public class OnboardingSample {
         SearchSubMerchantRequest request = SearchSubMerchantRequest.builder()
                 .subMerchantIds(subMerchantIds)
                 .subMerchantType(SubMerchantType.PERSONAL)
+                .name("sample sub merchant")
                 .build();
 
         SubMerchantListResponse subMerchantListResponse = tokenPay.onboarding().searchSubMerchant(request);

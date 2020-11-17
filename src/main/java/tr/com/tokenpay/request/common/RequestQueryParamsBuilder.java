@@ -3,6 +3,8 @@ package tr.com.tokenpay.request.common;
 import lombok.Data;
 
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +13,6 @@ import java.util.stream.Collectors;
 
 @Data
 public class RequestQueryParamsBuilder {
-
-    private String query;
 
     public static RequestQueryParamsBuilder builder() {
         return new RequestQueryParamsBuilder();
@@ -29,12 +29,11 @@ public class RequestQueryParamsBuilder {
                 Object value = field.get(object);
 
                 if (Objects.nonNull(value)) {
-                    query.append(field.getName()).append("=").append(formatValue(value)).append("&");
+                    query.append(field.getName()).append("=").append(URLEncoder.encode(formatValue(value), StandardCharsets.UTF_8)).append("&");
                 }
-
             }
 
-            return query.toString();
+            return query.toString().replace("+", "%20");
         } catch (Exception e) {
             return "";
         }
