@@ -1,4 +1,4 @@
-# TokenPay Node.js Client
+# TokenPay Java Client
 This repo contains the Java client for TokenPay API.
 
 ## Requirements
