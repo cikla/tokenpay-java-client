@@ -29,7 +29,7 @@ public class RequestQueryParamsBuilder {
                 Object value = field.get(object);
 
                 if (Objects.nonNull(value)) {
-                    query.append(field.getName()).append("=").append(URLEncoder.encode(formatValue(value), StandardCharsets.UTF_8)).append("&");
+                    query.append(field.getName()).append("=").append(URLEncoder.encode(formatValue(value))).append("&");
                 }
             }
 
