@@ -8,16 +8,10 @@ import tr.com.tokenpay.request.common.BaseRequest;
 @SuperBuilder
 public class UpdateSubMerchantRequest extends BaseRequest {
 
-    private Long id;
-
     private String name;
-
     private String address;
-
     private String email;
-
     private String iban;
-
     private String gsmNumber;
     private String taxOffice;
     private String taxNumber;

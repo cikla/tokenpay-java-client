@@ -6,8 +6,7 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ public class RequestQueryParamsBuilder {
 
     private static String formatValue(Object value) {
         if (value instanceof LocalDateTime) return formatDateValue((LocalDateTime) value);
-        if (value instanceof List) return formatListValue((List) value);
+        if (value instanceof Collection) return formatCollectionValue((Collection<Object>) value);
         return value.toString();
     }
 
@@ -49,7 +48,7 @@ public class RequestQueryParamsBuilder {
         return DATE_TIME_FORMATTER.format(date);
     }
 
-    private static String formatListValue(List<Object> value) {
+    private static String formatCollectionValue(Collection<Object> value) {
         return value.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 }

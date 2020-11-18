@@ -1,14 +1,9 @@
 package tr.com.tokenpay.response;
 
 import lombok.Data;
-
-import java.util.List;
+import tr.com.tokenpay.response.common.ListResponse;
 
 @Data
-public class CrossBookingTransactionListResponse {
+public class CrossBookingTransactionListResponse extends ListResponse<CrossBookingTransactionResponse> {
 
-    private Integer page;
-    private Integer size;
-    private Long totalSize;
-    private List<CrossBookingTransactionResponse> items;
 }

@@ -1,12 +1,12 @@
 package tr.com.tokenpay.response;
 
 import lombok.Data;
-import tr.com.tokenpay.model.CurrencyCode;
+import tr.com.tokenpay.model.Currency;
 import tr.com.tokenpay.model.PaymentStatus;
 import tr.com.tokenpay.model.PaymentType;
-import tr.com.tokenpay.response.dto.PaymentCardDto;
-import tr.com.tokenpay.response.dto.PaymentRefundDto;
-import tr.com.tokenpay.response.dto.PaymentTxDto;
+import tr.com.tokenpay.response.dto.PaymentCard;
+import tr.com.tokenpay.response.dto.PaymentRefund;
+import tr.com.tokenpay.response.dto.PaymentTransactionDetail;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,10 +23,10 @@ public class PaymentDetailResponse {
     private BigDecimal paidPrice;
     private BigDecimal walletPrice;
     private PaymentType paymentType;
-    private CurrencyCode currency;
+    private Currency currency;
     private PaymentStatus paymentStatus;
     private String conversationId;
-    private PaymentCardDto paymentCard;
-    private List<PaymentRefundDto> paymentRefunds;
-    private List<PaymentTxDto> paymentTxs;
+    private PaymentCard paymentCard;
+    private List<PaymentRefund> paymentRefunds;
+    private List<PaymentTransactionDetail> paymentTransactions;
 }

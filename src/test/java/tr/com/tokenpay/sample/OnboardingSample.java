@@ -8,8 +8,10 @@ import tr.com.tokenpay.response.BuyerResponse;
 import tr.com.tokenpay.response.SubMerchantListResponse;
 import tr.com.tokenpay.response.SubMerchantResponse;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OnboardingSample {
 
@@ -18,103 +20,142 @@ public class OnboardingSample {
     @Test
     void create_sub_merchant_sample() {
         CreateSubMerchantRequest request = CreateSubMerchantRequest.builder()
-                .gsmNumber("905555555555")
-                .email("sample.submerchant@tokenpay.com.tr")
-                .identityNumber("00000000000")
-                .name("sample sub merchant name")
-                .iban("TR330006100519786457841326")
-                .address("sample sub merchant address")
-                .subMerchantType(SubMerchantType.PERSONAL)
-                .contactName("sample sub merchant contactName")
-                .contactSurname("sample sub merchant contactSurname")
-                .subMerchantExternalId("sampleSubMerchantSubMerchantExternalId")
+                .contactName("Haluk")
+                .contactSurname("Demir")
+                .email("haluk.demir@example.com")
+                .gsmNumber("905551111111")
+                .iban("TR930006701000000001111111")
+                .identityNumber("11111111110")
+                .legalCompanyTitle("Dem Zeytinyağı Üretim Ltd. Şti.")
+                .name("Dem Zeytinyağı Üretim Ltd. Şti.")
+                .subMerchantExternalId(UUID.randomUUID().toString())
+                .subMerchantType(SubMerchantType.LIMITED_OR_JOINT_STOCK_COMPANY)
+                .taxNumber("1111111114")
+                .taxOffice("Erenköy")
+                .address("Suadiye Mah. Örnek Cd. No:23, 34740 Kadıköy/İstanbul")
                 .build();
 
         SubMerchantResponse subMerchantResponse = tokenPay.onboarding().createSubMerchant(request);
-        System.out.println(String.format("Create sub merchant response: %s", subMerchantResponse));
+        assertNotNull(subMerchantResponse.getId());
+        assertEquals(request.getContactName(), subMerchantResponse.getContactName());
+        assertEquals(request.getContactSurname(), subMerchantResponse.getContactSurname());
+        assertEquals(request.getEmail(), subMerchantResponse.getEmail());
+        assertEquals(request.getGsmNumber(), subMerchantResponse.getGsmNumber());
+        assertEquals(request.getIban(), subMerchantResponse.getIban());
+        assertEquals(request.getIdentityNumber(), subMerchantResponse.getIdentityNumber());
+        assertEquals(request.getLegalCompanyTitle(), subMerchantResponse.getLegalCompanyTitle());
+        assertEquals(request.getName(), subMerchantResponse.getName());
+        assertEquals(request.getSubMerchantExternalId(), subMerchantResponse.getSubMerchantExternalId());
+        assertEquals(request.getSubMerchantType(), subMerchantResponse.getSubMerchantType());
+        assertEquals(request.getTaxNumber(), subMerchantResponse.getTaxNumber());
+        assertEquals(request.getTaxOffice(), subMerchantResponse.getTaxOffice());
+        assertEquals(request.getAddress(), subMerchantResponse.getAddress());
     }
 
     @Test
     void update_sub_merchant_sample() {
+        Long subMerchantId = 1L;
+
         UpdateSubMerchantRequest request = UpdateSubMerchantRequest.builder()
-                .id(7L)
-                .gsmNumber("905555555555")
-                .email("sample.submerchant@tokenpay.com.tr")
-                .identityNumber("00000000000")
-                .name("sample sub merchant name")
-                .iban("TR330006100519786457841326")
-                .address("sample sub merchant address")
-                .contactName("sample sub merchant contactName")
-                .contactSurname("sample sub merchant contactSurname")
+                .contactName("Haluk")
+                .contactSurname("Demir")
+                .email("haluk.demir@example.com")
+                .gsmNumber("905551111111")
+                .iban("TR930006701000000001111111")
+                .identityNumber("11111111110")
+                .legalCompanyTitle("Dem Zeytinyağı Üretim Ltd. Şti.")
+                .name("Dem Zeytinyağı Üretim Ltd. Şti.")
+                .taxNumber("1111111114")
+                .taxOffice("Erenköy")
+                .address("Suadiye Mah. Örnek Cd. No:23, 34740 Kadıköy/İstanbul")
                 .build();
 
-        SubMerchantResponse subMerchantResponse = tokenPay.onboarding().updateSubMerchant(request);
-        System.out.println(String.format("Update sub merchant response: %s", subMerchantResponse));
+        SubMerchantResponse subMerchantResponse = tokenPay.onboarding().updateSubMerchant(subMerchantId, request);
+        assertEquals(subMerchantId, subMerchantResponse.getId());
+        assertEquals(request.getContactName(), subMerchantResponse.getContactName());
+        assertEquals(request.getContactSurname(), subMerchantResponse.getContactSurname());
+        assertEquals(request.getEmail(), subMerchantResponse.getEmail());
+        assertEquals(request.getGsmNumber(), subMerchantResponse.getGsmNumber());
+        assertEquals(request.getIban(), subMerchantResponse.getIban());
+        assertEquals(request.getIdentityNumber(), subMerchantResponse.getIdentityNumber());
+        assertEquals(request.getLegalCompanyTitle(), subMerchantResponse.getLegalCompanyTitle());
+        assertEquals(request.getName(), subMerchantResponse.getName());
+        assertEquals(request.getTaxNumber(), subMerchantResponse.getTaxNumber());
+        assertEquals(request.getTaxOffice(), subMerchantResponse.getTaxOffice());
+        assertEquals(request.getAddress(), subMerchantResponse.getAddress());
     }
 
     @Test
     void retrieve_sub_merchant_sample() {
-        RetrieveSubMerchantRequest request = RetrieveSubMerchantRequest.builder()
-                .id(1L)
-                .build();
+        Long subMerchantId = 1L;
 
-        SubMerchantResponse subMerchantResponse = tokenPay.onboarding().retrieveSubMerchant(request);
-        System.out.println(String.format("Retrieve sub merchant response: %s", subMerchantResponse));
+        SubMerchantResponse subMerchantResponse = tokenPay.onboarding().retrieveSubMerchant(subMerchantId);
+        assertEquals(subMerchantId, subMerchantResponse.getId());
     }
 
     @Test
     void search_sub_merchant_sample() {
-        List<Long> subMerchantIds = Arrays.asList(1L, 7L);
+        HashSet<Long> subMerchantIds = new HashSet<Long>() {{
+            add(1L);
+            add(2L);
+        }};
 
-        SearchSubMerchantRequest request = SearchSubMerchantRequest.builder()
+        SearchSubMerchantsRequest request = SearchSubMerchantsRequest.builder()
                 .subMerchantIds(subMerchantIds)
-                .subMerchantType(SubMerchantType.PERSONAL)
-                .name("sample sub merchant")
+                .name("Zeytinyağı Üretim")
                 .build();
 
-        SubMerchantListResponse subMerchantListResponse = tokenPay.onboarding().searchSubMerchant(request);
-        System.out.println(String.format("Search sub merchant response: %s", subMerchantListResponse));
+        SubMerchantListResponse subMerchantListResponse = tokenPay.onboarding().searchSubMerchants(request);
+        assertTrue(subMerchantListResponse.getItems().size() > 0);
     }
 
     @Test
     void create_buyer_sample() {
         CreateBuyerRequest request = CreateBuyerRequest.builder()
-                .buyerExternalId("323232")
-                .email("buyer.sample@tokenpay.com.tr")
-                .gsmNumber("905555555555")
-                .name("Buyer Name")
-                .surname("Buyer Surname")
-                .identityNumber("00000000000")
+                .buyerExternalId(UUID.randomUUID().toString())
+                .email("haluk.demir@example.com")
+                .gsmNumber("905551111111")
+                .name("Haluk")
+                .surname("Demir")
+                .identityNumber("11111111110")
                 .build();
 
         BuyerResponse buyerResponse = tokenPay.onboarding().createBuyer(request);
-        System.out.println(String.format("Create buyer response: %s", buyerResponse));
+        assertNotNull(buyerResponse.getId());
+        assertEquals(request.getBuyerExternalId(), buyerResponse.getBuyerExternalId());
+        assertEquals(request.getEmail(), buyerResponse.getEmail());
+        assertEquals(request.getGsmNumber(), buyerResponse.getGsmNumber());
+        assertEquals(request.getName(), buyerResponse.getName());
+        assertEquals(request.getSurname(), buyerResponse.getSurname());
+        assertEquals(request.getIdentityNumber(), buyerResponse.getIdentityNumber());
     }
 
     @Test
     void update_buyer_sample() {
+        Long buyerId = 1L;
+
         UpdateBuyerRequest request = UpdateBuyerRequest.builder()
-                .id(3L)
-                .email("buyer.sample@tokenpay.com.tr")
-                .gsmNumber("905555555555")
-                .name("New Buyer Name")
-                .surname("New Buyer Surname")
-                .identityNumber("00000000000")
+                .email("haluk.demir@example.com")
+                .gsmNumber("905551111111")
+                .name("Haluk")
+                .surname("Demir")
+                .identityNumber("11111111110")
                 .build();
 
-        BuyerResponse buyerResponse = tokenPay.onboarding().updateBuyer(request);
-        System.out.println(String.format("Update buyer response: %s", buyerResponse));
+        BuyerResponse buyerResponse = tokenPay.onboarding().updateBuyer(buyerId, request);
+        assertEquals(buyerId, buyerResponse.getId());
+        assertEquals(request.getEmail(), buyerResponse.getEmail());
+        assertEquals(request.getGsmNumber(), buyerResponse.getGsmNumber());
+        assertEquals(request.getName(), buyerResponse.getName());
+        assertEquals(request.getSurname(), buyerResponse.getSurname());
+        assertEquals(request.getIdentityNumber(), buyerResponse.getIdentityNumber());
     }
 
     @Test
     void retrieve_buyer_sample() {
-        RetrieveBuyerRequest request = RetrieveBuyerRequest.builder()
-                .id(1L)
-                .build();
+        Long buyerId = 1L;
 
-        BuyerResponse buyerResponse = tokenPay.onboarding().retrieveBuyer(request);
-        System.out.println(String.format("Retrieve buyer response: %s", buyerResponse));
+        BuyerResponse buyerResponse = tokenPay.onboarding().retrieveBuyer(buyerId);
+        assertEquals(buyerId, buyerResponse.getId());
     }
-
-
 }

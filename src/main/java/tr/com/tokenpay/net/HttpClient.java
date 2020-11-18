@@ -40,8 +40,8 @@ public class HttpClient {
         return exchange(url, HttpMethod.PUT, headers, request, responseType);
     }
 
-    public static <T> T delete(String url, Map<String, String> headers, Object request, Class<T> responseType) {
-        return exchange(url, HttpMethod.DELETE, headers, request, responseType);
+    public static <T> T delete(String url, Map<String, String> headers, Class<T> responseType) {
+        return exchange(url, HttpMethod.DELETE, headers, null, responseType);
     }
 
     private static <T> T exchange(String url, HttpMethod httpMethod, Map<String, String> headers, Object request, Class<T> responseType) {

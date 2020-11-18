@@ -2,35 +2,45 @@ package tr.com.tokenpay.sample;
 
 import org.junit.jupiter.api.Test;
 import tr.com.tokenpay.TokenPay;
-import tr.com.tokenpay.model.CurrencyCode;
-import tr.com.tokenpay.request.BinCheckRequest;
+import tr.com.tokenpay.model.CardAssociation;
+import tr.com.tokenpay.model.CardType;
+import tr.com.tokenpay.model.Currency;
 import tr.com.tokenpay.request.SearchInstallmentRequest;
-import tr.com.tokenpay.response.BinCheckResponse;
+import tr.com.tokenpay.response.BinNumberResponse;
 import tr.com.tokenpay.response.InstallmentListResponse;
 
 import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InstallmentSample {
 
     private final TokenPay tokenPay = new TokenPay("api-key", "secret-key", "http://localhost:8000");
 
     @Test
-    void bin_check_sample() {
-        BinCheckRequest request = BinCheckRequest.builder().binNumber("527682").build();
+    void search_installments_sample() {
+        SearchInstallmentRequest request = SearchInstallmentRequest.builder()
+                .binNumber("525864")
+                .price(BigDecimal.valueOf(100L))
+                .currency(Currency.TRY)
+                .build();
 
-        BinCheckResponse binCheckResponse = tokenPay.installment().binCheck(request);
-        System.out.println(String.format("Bin check response: %s", binCheckResponse));
+        InstallmentListResponse installmentListResponse = tokenPay.installment().searchInstallments(request);
+        assertTrue(installmentListResponse.getItems().size() > 0);
     }
 
     @Test
-    void retrieve_installment_sample() {
-        SearchInstallmentRequest request = SearchInstallmentRequest.builder()
-                .binNumber("552096")
-                .price(BigDecimal.valueOf(100L))
-                .currency(CurrencyCode.TRY)
-                .build();
+    void retrieve_bin_sample() {
+        String binNumber = "525864";
 
-        InstallmentListResponse installmentListResponse = tokenPay.installment().retrieveInstallments(request);
-        System.out.println(String.format("Installment list response: %s", installmentListResponse));
+        BinNumberResponse binNumberResponse = tokenPay.installment().retrieveBinNumber(binNumber);
+        assertEquals(binNumberResponse.getBinNumber(), binNumber);
+        assertEquals(binNumberResponse.getCardType(), CardType.CREDIT_CARD);
+        assertEquals(binNumberResponse.getCardAssociation(), CardAssociation.MASTER_CARD);
+        assertEquals(binNumberResponse.getCardBrand(), "World");
+        assertEquals(binNumberResponse.getBankName(), "YAPI VE KREDİ BANKASI A.Ş.");
+        assertEquals(binNumberResponse.getBankCode(), 67L);
+        assertEquals(binNumberResponse.getCommercial(), false);
     }
 }

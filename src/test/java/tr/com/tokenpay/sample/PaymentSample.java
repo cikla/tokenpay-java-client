@@ -4,14 +4,17 @@ import org.junit.jupiter.api.Test;
 import tr.com.tokenpay.TokenPay;
 import tr.com.tokenpay.model.*;
 import tr.com.tokenpay.request.*;
-import tr.com.tokenpay.request.dto.CardDto;
-import tr.com.tokenpay.request.dto.CreatePaymentItemDto;
+import tr.com.tokenpay.request.dto.PaymentCard;
+import tr.com.tokenpay.request.dto.PaymentItem;
 import tr.com.tokenpay.response.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentSample {
 
@@ -19,27 +22,27 @@ public class PaymentSample {
 
     @Test
     void create_payment_sample() {
-        List<CreatePaymentItemDto> items = new ArrayList<>();
+        List<PaymentItem> items = new ArrayList<>();
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 1")
-                .externalId("sfdsdf")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(30))
                 .subMerchantId(1L)
                 .subMerchantPrice(BigDecimal.valueOf(27))
                 .build());
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 2")
-                .externalId("cvbxcvb")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(50))
                 .subMerchantId(2L)
                 .subMerchantPrice(BigDecimal.valueOf(42))
                 .build());
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 3")
-                .externalId("vmvcx")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(20))
                 .subMerchantId(3L)
                 .subMerchantPrice(BigDecimal.valueOf(18))
@@ -50,47 +53,138 @@ public class PaymentSample {
                 .paidPrice(BigDecimal.valueOf(100))
                 .walletPrice(BigDecimal.ZERO)
                 .installment(1)
-                .currency(CurrencyCode.TRY)
-                .conversationId("asdjasdjasdfjhasd")
+                .currency(Currency.TRY)
+                .conversationId("456d1297-908e-4bd6-a13b-4be31a6e47d5")
                 .paymentGroup(PaymentGroup.PRODUCT)
                 .paymentPhase(PaymentPhase.AUTH)
-                .card(CardDto.builder()
-                        .cardHolderName("Pharmacy User")
-                        .cardNumber("5406670000000009")
-                        .expireYear("2035")
-                        .expireMonth("11")
-                        .cvc("123")
+                .card(PaymentCard.builder()
+                        .cardHolderName("Haluk Demir")
+                        .cardNumber("5258640000000001")
+                        .expireYear("2044")
+                        .expireMonth("07")
+                        .cvc("000")
                         .build())
                 .items(items)
                 .build();
 
         PaymentResponse paymentResponse = tokenPay.payment().createPayment(request);
-        System.out.println(String.format("Create Payment Result: %s", paymentResponse));
+        assertNotNull(paymentResponse.getId());
+        assertEquals(paymentResponse.getPrice(), request.getPrice());
+        assertEquals(paymentResponse.getPaidPrice(), request.getPaidPrice());
+        assertEquals(paymentResponse.getWalletPrice(), request.getWalletPrice());
+        assertEquals(paymentResponse.getCurrency(), request.getCurrency());
+        assertEquals(paymentResponse.getInstallment(), request.getInstallment());
+        assertEquals(paymentResponse.getPaymentGroup(), request.getPaymentGroup());
+        assertEquals(paymentResponse.getPaymentPhase(), request.getPaymentPhase());
+        assertEquals(paymentResponse.getIsThreeDS(), false);
+        assertEquals(paymentResponse.getMerchantCommissionRate(), BigDecimal.ZERO);
+        assertEquals(paymentResponse.getMerchantCommissionRateAmount(), BigDecimal.ZERO);
+        assertEquals(paymentResponse.getPaidWithStoredCard(), false);
+        assertEquals(paymentResponse.getBinNumber(), "525864");
+        assertEquals(paymentResponse.getLastFourDigits(), "0001");
+        assertEquals(paymentResponse.getCardType(), CardType.CREDIT_CARD);
+        assertEquals(paymentResponse.getCardAssociation(), CardAssociation.MASTER_CARD);
+        assertEquals(paymentResponse.getCardBrand(), "World");
+        assertEquals(paymentResponse.getPaymentTransactions().size(), 3);
+        assertNull(paymentResponse.getCardUserKey());
+        assertNull(paymentResponse.getCardToken());
     }
 
     @Test
-    void init_3ds_payment_sample() {
-        List<CreatePaymentItemDto> items = new ArrayList<>();
+    void create_payment_and_store_card_sample() {
+        List<PaymentItem> items = new ArrayList<>();
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 1")
-                .externalId("sfdsdf")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(30))
                 .subMerchantId(1L)
                 .subMerchantPrice(BigDecimal.valueOf(27))
                 .build());
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 2")
-                .externalId("cvbxcvb")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(50))
                 .subMerchantId(2L)
                 .subMerchantPrice(BigDecimal.valueOf(42))
                 .build());
 
-        items.add(CreatePaymentItemDto.builder()
+        items.add(PaymentItem.builder()
                 .name("item 3")
-                .externalId("vmvcx")
+                .externalId(UUID.randomUUID().toString())
+                .price(BigDecimal.valueOf(20))
+                .subMerchantId(3L)
+                .subMerchantPrice(BigDecimal.valueOf(18))
+                .build());
+
+        CreatePaymentRequest request = CreatePaymentRequest.builder()
+                .price(BigDecimal.valueOf(100))
+                .paidPrice(BigDecimal.valueOf(100))
+                .walletPrice(BigDecimal.ZERO)
+                .installment(1)
+                .currency(Currency.TRY)
+                .conversationId("456d1297-908e-4bd6-a13b-4be31a6e47d5")
+                .paymentGroup(PaymentGroup.PRODUCT)
+                .paymentPhase(PaymentPhase.AUTH)
+                .card(PaymentCard.builder()
+                        .cardHolderName("Haluk Demir")
+                        .cardNumber("5258640000000001")
+                        .expireYear("2044")
+                        .expireMonth("07")
+                        .cvc("000")
+                        .storeCardAfterSuccessPayment(true)
+                        .cardAlias("My YKB Card")
+                        .build())
+                .items(items)
+                .build();
+
+        PaymentResponse paymentResponse = tokenPay.payment().createPayment(request);
+        assertNotNull(paymentResponse.getId());
+        assertEquals(paymentResponse.getPrice(), request.getPrice());
+        assertEquals(paymentResponse.getPaidPrice(), request.getPaidPrice());
+        assertEquals(paymentResponse.getWalletPrice(), request.getWalletPrice());
+        assertEquals(paymentResponse.getCurrency(), request.getCurrency());
+        assertEquals(paymentResponse.getInstallment(), request.getInstallment());
+        assertEquals(paymentResponse.getPaymentGroup(), request.getPaymentGroup());
+        assertEquals(paymentResponse.getPaymentPhase(), request.getPaymentPhase());
+        assertEquals(paymentResponse.getIsThreeDS(), false);
+        assertEquals(paymentResponse.getMerchantCommissionRate(), BigDecimal.ZERO);
+        assertEquals(paymentResponse.getMerchantCommissionRateAmount(), BigDecimal.ZERO);
+        assertEquals(paymentResponse.getPaidWithStoredCard(), false);
+        assertEquals(paymentResponse.getBinNumber(), "525864");
+        assertEquals(paymentResponse.getLastFourDigits(), "0001");
+        assertEquals(paymentResponse.getCardType(), CardType.CREDIT_CARD);
+        assertEquals(paymentResponse.getCardAssociation(), CardAssociation.MASTER_CARD);
+        assertEquals(paymentResponse.getCardBrand(), "World");
+        assertEquals(paymentResponse.getPaymentTransactions().size(), 3);
+        assertNotNull(paymentResponse.getCardUserKey());
+        assertNotNull(paymentResponse.getCardToken());
+    }
+
+    @Test
+    void init_3ds_payment_sample() {
+        List<PaymentItem> items = new ArrayList<>();
+
+        items.add(PaymentItem.builder()
+                .name("item 1")
+                .externalId(UUID.randomUUID().toString())
+                .price(BigDecimal.valueOf(30))
+                .subMerchantId(1L)
+                .subMerchantPrice(BigDecimal.valueOf(27))
+                .build());
+
+        items.add(PaymentItem.builder()
+                .name("item 2")
+                .externalId(UUID.randomUUID().toString())
+                .price(BigDecimal.valueOf(50))
+                .subMerchantId(2L)
+                .subMerchantPrice(BigDecimal.valueOf(42))
+                .build());
+
+        items.add(PaymentItem.builder()
+                .name("item 3")
+                .externalId(UUID.randomUUID().toString())
                 .price(BigDecimal.valueOf(20))
                 .subMerchantId(3L)
                 .subMerchantPrice(BigDecimal.valueOf(18))
@@ -101,39 +195,39 @@ public class PaymentSample {
                 .paidPrice(BigDecimal.valueOf(100))
                 .walletPrice(BigDecimal.ZERO)
                 .installment(1)
-                .currency(CurrencyCode.TRY)
-                .conversationId("asdjasdjasdfjhasd")
-                .callbackUrl("http://callback.url")
+                .currency(Currency.TRY)
+                .callbackUrl("https://www.your-website.com/tokenpay-3DSecure-callback")
+                .conversationId("456d1297-908e-4bd6-a13b-4be31a6e47d5")
                 .paymentGroup(PaymentGroup.PRODUCT)
                 .paymentPhase(PaymentPhase.AUTH)
-                .card(CardDto.builder()
-                        .cardHolderName("Pharmacy User")
-                        .cardNumber("5406670000000009")
-                        .expireYear("2035")
-                        .expireMonth("11")
-                        .cvc("123")
+                .card(PaymentCard.builder()
+                        .cardHolderName("Haluk Demir")
+                        .cardNumber("5258640000000001")
+                        .expireYear("2044")
+                        .expireMonth("07")
+                        .cvc("000")
                         .build())
                 .items(items)
                 .build();
 
-        ThreeDSInitResponse threeDSInitResponse = tokenPay.payment().init3DSPayment(request);
-        System.out.println(String.format("Init 3DS Result: %s", threeDSInitResponse.getHtmlContent()));
-        System.out.println(String.format("Init 3DS Decoded Result: %s", threeDSInitResponse.getDecodedHtmlContent()));
+        InitThreeDSPaymentResponse initThreeDSPaymentResponse = tokenPay.payment().init3DSPayment(request);
+        assertNotNull(initThreeDSPaymentResponse);
+        assertNotNull(initThreeDSPaymentResponse.getHtmlContent());
     }
 
     @Test
     void complete_3ds_payment_sample() {
-        CompleteThreeDSRequest request = CompleteThreeDSRequest.builder()
-                .paymentId(12L)
+        CompleteThreeDSPaymentRequest request = CompleteThreeDSPaymentRequest.builder()
+                .paymentId(1L)
                 .build();
 
         PaymentResponse paymentResponse = tokenPay.payment().complete3DSPayment(request);
-        System.out.println(String.format("Completed 3DS Payment Result: %s", paymentResponse));
+        assertNotNull(paymentResponse);
     }
 
     @Test
-    void approve_payment_tx_sample() {
-        PaymentTxApprovalRequest request = PaymentTxApprovalRequest.builder()
+    void approve_payment_transaction_sample() {
+        ApprovePaymentTransactionsRequest request = ApprovePaymentTransactionsRequest.builder()
                 .isTransactional(true)
                 .paymentTransactionIds(new HashSet<Long>() {{
                     add(1L);
@@ -141,13 +235,14 @@ public class PaymentSample {
                 }})
                 .build();
 
-        PaymentTxApprovalListResponse paymentTxApprovalListResponse = tokenPay.payment().paymentTransactionApprove(request);
-        System.out.println(String.format("Payment Tx Approval Result: %s", paymentTxApprovalListResponse));
+        PaymentTransactionApprovalListResponse paymentTransactionApprovalListResponse = tokenPay.payment().approvePaymentTransactions(request);
+        assertNotNull(paymentTransactionApprovalListResponse);
+        assertEquals(paymentTransactionApprovalListResponse.getSize(), 2);
     }
 
     @Test
-    void disapprove_payment_tx_sample() {
-        PaymentTxDisapprovalRequest request = PaymentTxDisapprovalRequest.builder()
+    void disapprove_payment_transaction_sample() {
+        DisapprovePaymentTransactionsRequest request = DisapprovePaymentTransactionsRequest.builder()
                 .isTransactional(true)
                 .paymentTransactionIds(new HashSet<Long>() {{
                     add(1L);
@@ -155,144 +250,173 @@ public class PaymentSample {
                 }})
                 .build();
 
-        PaymentTxApprovalListResponse paymentTxApprovalListResponse = tokenPay.payment().paymentTransactionDisapprove(request);
-        System.out.println(String.format("Payment Tx Disapproval Result: %s", paymentTxApprovalListResponse));
+        PaymentTransactionApprovalListResponse paymentTransactionApprovalListResponse = tokenPay.payment().disapprovePaymentTransactions(request);
+        assertNotNull(paymentTransactionApprovalListResponse);
+        assertEquals(paymentTransactionApprovalListResponse.getSize(), 2);
     }
 
     @Test
-    void create_refund_sample() {
-        CreateRefundRequest request = CreateRefundRequest.builder()
-                .paymentId(5L)
+    void refund_payment_sample() {
+        RefundPaymentRequest request = RefundPaymentRequest.builder()
+                .paymentId(1L)
                 .refundDestinationType(RefundDestinationType.CARD)
                 .build();
 
-        RefundResponse refundResponse = tokenPay.payment().createRefund(request);
-        System.out.println(String.format("Create Refund Result: %s", refundResponse));
+        PaymentRefundResponse paymentRefundResponse = tokenPay.payment().refundPayment(request);
+        assertNotNull(paymentRefundResponse);
+        assertEquals(paymentRefundResponse.getPaymentId(), request.getPaymentId());
+        assertEquals(paymentRefundResponse.getStatus(), RefundStatus.SUCCESS);
     }
 
     @Test
     void retrieve_refund_sample() {
-        RetrieveRefundRequest request = RetrieveRefundRequest.builder()
-                .id(1L)
-                .build();
+        Long paymentRefundId = 1L;
 
-        RefundResponse refundResponse = tokenPay.payment().retrieveRefund(request);
-        System.out.println(String.format("Retrieve Refund Result: %s", refundResponse));
+        PaymentRefundResponse paymentRefundResponse = tokenPay.payment().retrievePaymentRefund(paymentRefundId);
+        assertNotNull(paymentRefundResponse);
+        assertEquals(paymentRefundResponse.getId(), paymentRefundId);
     }
 
     @Test
-    void create_refund_tx_sample() {
-        CreateRefundTxRequest request = CreateRefundTxRequest.builder()
-                .paymentTransactionId(19L)
-                .refundPrice(BigDecimal.valueOf(3.9))
+    void refund_payment_transaction_sample() {
+        RefundPaymentTransactionRequest request = RefundPaymentTransactionRequest.builder()
+                .paymentTransactionId(1L)
+                .refundPrice(BigDecimal.valueOf(20))
                 .refundDestinationType(RefundDestinationType.CARD)
+                .conversationId("456d1297-908e-4bd6-a13b-4be31a6e47d5")
                 .build();
 
-        RefundTxResponse refundTxResponse = tokenPay.payment().createRefundTx(request);
-        System.out.println(String.format("Create Refund Tx Result: %s", refundTxResponse));
+        PaymentTransactionRefundResponse paymentTransactionRefundResponse = tokenPay.payment().refundPaymentTransaction(request);
+        assertNotNull(paymentTransactionRefundResponse);
+        assertEquals(paymentTransactionRefundResponse.getPaymentTransactionId(), request.getPaymentTransactionId());
+        assertEquals(paymentTransactionRefundResponse.getStatus(), RefundStatus.SUCCESS);
     }
 
     @Test
-    void retrieve_refund_tx_sample() {
-        RetrieveRefundTxRequest request = RetrieveRefundTxRequest.builder()
-                .id(1L)
-                .build();
+    void retrieve_payment_transaction_refund_sample() {
+        Long paymentTransactionRefundId = 1L;
 
-        RefundTxResponse refundTxResponse = tokenPay.payment().retrieveRefundTx(request);
-        System.out.println(String.format("Retrieve Refund Tx Result: %s", refundTxResponse));
+        PaymentTransactionRefundResponse paymentTransactionRefundResponse = tokenPay.payment().retrievePaymentTransactionRefund(paymentTransactionRefundId);
+        assertNotNull(paymentTransactionRefundResponse);
+        assertEquals(paymentTransactionRefundResponse.getId(), paymentTransactionRefundId);
+        assertEquals(paymentTransactionRefundResponse.getStatus(), RefundStatus.SUCCESS);
     }
 
     @Test
-    void search_refund_tx_sample() {
-        SearchRefundTxRequest request = SearchRefundTxRequest.builder()
-                .paymentId(14L)
+    void search_payment_transaction_refund_sample() {
+        SearchPaymentTransactionRefundsRequest request = SearchPaymentTransactionRefundsRequest.builder()
+                .paymentId(1L)
                 .build();
 
-        RefundTxListResponse refundTxListResponse = tokenPay.payment().searchRefundTx(request);
-        System.out.println(String.format("Search Refund Tx Result: %s", refundTxListResponse));
+        PaymentTransactionRefundListResponse paymentTransactionRefundListResponse = tokenPay.payment().searchPaymentTransactionRefunds(request);
+        assertNotNull(paymentTransactionRefundListResponse);
+        assertTrue(paymentTransactionRefundListResponse.getItems().size() > 0);
     }
 
     @Test
     void retrieve_payment_sample() {
-        PaymentDetailResponse paymentResponse = tokenPay.payment().retrievePayment(1L);
-        System.out.println(String.format("Retrieve Payment Result: %s", paymentResponse));
+        Long paymentId = 1L;
+
+        PaymentDetailResponse paymentResponse = tokenPay.payment().retrievePayment(paymentId);
+        assertNotNull(paymentResponse);
+        assertEquals(paymentResponse.getId(), paymentId);
     }
 
     @Test
     void search_payment_sample() {
-        SearchPaymentRequest request = SearchPaymentRequest.builder()
-                .currency(CurrencyCode.TRY)
+        SearchPaymentsRequest request = SearchPaymentsRequest.builder()
+                .currency(Currency.TRY)
                 .paymentStatus(PaymentStatus.SUCCESS)
                 .build();
 
-        PaymentListResponse paymentListResponse = tokenPay.payment().searchPayment(request);
-        System.out.println(String.format("Search Payment Result: %s", paymentListResponse));
+        PaymentDetailListResponse paymentDetailListResponse = tokenPay.payment().searchPayments(request);
+        assertNotNull(paymentDetailListResponse);
+        assertTrue(paymentDetailListResponse.getItems().size() > 0);
     }
 
     @Test
-    void cross_booking_send_sample() {
-        CrossBookingSendRequest request = CrossBookingSendRequest.builder()
-                .currency(CurrencyCode.TRY.name())
-                .price(BigDecimal.TEN)
-                .reason("send")
+    void send_cross_booking_money_sample() {
+        CrossBookingRequest request = CrossBookingRequest.builder()
+                .currency(Currency.TRY)
+                .price(BigDecimal.valueOf(100))
+                .reason("Send Money")
                 .subMerchantId(1L)
                 .build();
 
-        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().crossBookingSend(request);
-        System.out.println(String.format("Cross Booking Send Result: %s", crossBookingTransactionResponse));
+        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().sendMoney(request);
+        assertNotNull(crossBookingTransactionResponse);
+        assertEquals(crossBookingTransactionResponse.getPrice(), BigDecimal.valueOf(100));
+        assertEquals(crossBookingTransactionResponse.getTransactionStatus(), CrossBookingTransactionStatus.WAITING_FOR_PAYOUT);
     }
 
     @Test
-    void cross_booking_receive_sample() {
-        CrossBookingReceiveRequest request = CrossBookingReceiveRequest.builder()
-                .currency(CurrencyCode.TRY.name())
-                .price(BigDecimal.TEN)
-                .reason("receive")
+    void receive_cross_booking_money_sample() {
+        CrossBookingRequest request = CrossBookingRequest.builder()
+                .currency(Currency.TRY)
+                .price(BigDecimal.valueOf(100))
+                .reason("Receive Money")
                 .subMerchantId(1L)
                 .build();
 
-        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().crossBookingReceive(request);
-        System.out.println(String.format("Cross Booking Receive Result: %s", crossBookingTransactionResponse));
+        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().receiveMoney(request);
+        assertNotNull(crossBookingTransactionResponse);
+        assertEquals(crossBookingTransactionResponse.getPrice(), BigDecimal.valueOf(100));
+        assertEquals(crossBookingTransactionResponse.getTransactionStatus(), CrossBookingTransactionStatus.WAITING_FOR_PAYOUT);
     }
 
     @Test
-    void cross_booking_cancel_sample() {
-        CrossBookingCancelRequest request = CrossBookingCancelRequest.builder()
-                .crossBookingId(4L)
+    void cancel_cross_booking_sample() {
+        CancelCrossBookingRequest request = CancelCrossBookingRequest.builder()
+                .crossBookingId(1L)
                 .build();
 
-        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().crossBookingCancel(request);
-        System.out.println(String.format("Cross Booking Cancel Result: %s", crossBookingTransactionResponse));
+        CrossBookingTransactionResponse crossBookingTransactionResponse = tokenPay.payment().cancelCrossBooking(request);
+        assertNotNull(crossBookingTransactionResponse);
+        assertEquals(crossBookingTransactionResponse.getId(), request.getCrossBookingId());
+        assertEquals(crossBookingTransactionResponse.getTransactionStatus(), CrossBookingTransactionStatus.CANCELLED);
     }
 
     @Test
     void cross_booking_search_sample() {
-        SearchCrossBookingRequest request = SearchCrossBookingRequest.builder()
+        SearchCrossBookingsRequest request = SearchCrossBookingsRequest.builder()
+                .sourceMerchantId(1L)
+                .sourceMerchantType(MerchantType.MERCHANT)
+                .destinationMerchantId(1L)
+                .destinationMerchantType(MerchantType.SUB_MERCHANT)
+                .transactionStatus(CrossBookingTransactionStatus.WAITING_FOR_PAYOUT)
                 .page(0)
-                .size(10)
+                .size(25)
                 .build();
 
-        CrossBookingTransactionListResponse crossBookingTransactionListResponse = tokenPay.payment().searchCrossBooking(request);
-        System.out.println(String.format("Cross Booking Search Result: %s", crossBookingTransactionListResponse));
+        CrossBookingTransactionListResponse crossBookingTransactionListResponse = tokenPay.payment().searchCrossBookings(request);
+        assertNotNull(crossBookingTransactionListResponse);
+        assertTrue(crossBookingTransactionListResponse.getItems().size() > 0);
     }
 
     @Test
-    void delete_card_sample() {
-        DeleteCardRequest request = DeleteCardRequest.builder()
+    void delete_stored_card_sample() {
+        DeleteStoredCardRequest request = DeleteStoredCardRequest.builder()
                 .cardUserKey("45012f78-3d68-4d58-902f-d4d858f14d67")
                 .cardToken("0ca79029-d805-4e02-97fc-5c599734bc6b")
                 .build();
 
-        tokenPay.payment().deleteCard(request);
+        tokenPay.payment().deleteStoredCard(request);
     }
 
     @Test
     void search_card_sample() {
-        SearchCardRequest request = SearchCardRequest.builder()
+        SearchStoredCardsRequest request = SearchStoredCardsRequest.builder()
+                .cardAlias("My YKB Card")
+                .cardBankName("YAPI VE KREDİ BANKASI A.Ş.")
+                .cardBrand("World")
+                .cardAssociation(CardAssociation.MASTER_CARD)
+                .cardToken("d9b19d1a-243c-43dc-a498-add08162df72")
+                .cardUserKey("c115ecdf-0afc-4d83-8a1b-719c2af19cbd")
                 .cardType(CardType.CREDIT_CARD)
                 .build();
 
-        CardListResponse cardListResponse = tokenPay.payment().searchCard(request);
-        System.out.println(String.format("Search Card Result: %s", cardListResponse));
+        StoredCardListResponse storedCardListResponse = tokenPay.payment().searchStoredCards(request);
+        assertNotNull(storedCardListResponse);
+        assertTrue(storedCardListResponse.getItems().size() > 0);
     }
 }

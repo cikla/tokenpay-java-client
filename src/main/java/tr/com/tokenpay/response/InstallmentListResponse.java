@@ -1,11 +1,12 @@
 package tr.com.tokenpay.response;
 
 import lombok.Data;
+import tr.com.tokenpay.response.dto.Installment;
 
 import java.util.List;
 
 @Data
 public class InstallmentListResponse {
 
-    private List<InstallmentResponse> items;
+    private List<Installment> items;
 }

@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 
 @Data
 @SuperBuilder
-public class SearchInstallmentRequest extends BaseRequest {
+public class CrossBookingRequest extends BaseRequest {
 
-    private String binNumber;
+    private String reason;
     private BigDecimal price;
     private Currency currency;
+    private Long subMerchantId;
 }

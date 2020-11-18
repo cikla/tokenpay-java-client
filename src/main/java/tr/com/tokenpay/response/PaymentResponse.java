@@ -2,7 +2,7 @@ package tr.com.tokenpay.response;
 
 import lombok.Data;
 import tr.com.tokenpay.model.*;
-import tr.com.tokenpay.response.dto.CardPaymentTxDto;
+import tr.com.tokenpay.response.dto.PaymentTransaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class PaymentResponse {
     private BigDecimal price;
     private BigDecimal paidPrice;
     private BigDecimal walletPrice;
-    private String currency;
+    private Currency currency;
     private Long buyerId;
     private Integer installment;
     private String conversationId;
@@ -36,5 +36,5 @@ public class PaymentResponse {
     private CardType cardType;
     private CardAssociation cardAssociation;
     private String cardBrand;
-    private List<CardPaymentTxDto> paymentTransactions;
+    private List<PaymentTransaction> paymentTransactions;
 }

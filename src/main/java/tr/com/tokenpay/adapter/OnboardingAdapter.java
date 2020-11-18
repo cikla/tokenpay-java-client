@@ -10,10 +10,8 @@ import tr.com.tokenpay.response.SubMerchantResponse;
 
 public class OnboardingAdapter extends BaseAdapter {
 
-    private final RequestOptions requestOptions;
-
     public OnboardingAdapter(RequestOptions requestOptions) {
-        this.requestOptions = requestOptions;
+        super(requestOptions);
     }
 
     public SubMerchantResponse createSubMerchant(CreateSubMerchantRequest createSubMerchantRequest) {
@@ -22,22 +20,22 @@ public class OnboardingAdapter extends BaseAdapter {
                 createSubMerchantRequest, SubMerchantResponse.class);
     }
 
-    public SubMerchantResponse updateSubMerchant(UpdateSubMerchantRequest updateSubMerchantRequest) {
-        String path = "/onboarding/v1/sub-merchants";
+    public SubMerchantResponse updateSubMerchant(Long id, UpdateSubMerchantRequest updateSubMerchantRequest) {
+        String path = "/onboarding/v1/sub-merchants/" + id;
         return HttpClient.put(requestOptions.getBaseUrl() + path, createHeaders(updateSubMerchantRequest, path, requestOptions),
                 updateSubMerchantRequest, SubMerchantResponse.class);
     }
 
-    public SubMerchantListResponse searchSubMerchant(SearchSubMerchantRequest searchSubMerchantRequest) {
-        String query = RequestQueryParamsBuilder.buildQueryParam(searchSubMerchantRequest);
+    public SubMerchantResponse retrieveSubMerchant(Long id) {
+        String path = "/onboarding/v1/sub-merchants/" + id;
+        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), SubMerchantResponse.class);
+    }
+
+    public SubMerchantListResponse searchSubMerchants(SearchSubMerchantsRequest searchSubMerchantsRequest) {
+        String query = RequestQueryParamsBuilder.buildQueryParam(searchSubMerchantsRequest);
         String path = "/onboarding/v1/sub-merchants" + query;
 
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), SubMerchantListResponse.class);
-    }
-
-    public SubMerchantResponse retrieveSubMerchant(RetrieveSubMerchantRequest retrieveSubMerchantRequest) {
-        String path = "/onboarding/v1/sub-merchants/" + retrieveSubMerchantRequest.getId();
-        return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), SubMerchantResponse.class);
     }
 
     public BuyerResponse createBuyer(CreateBuyerRequest createBuyerRequest) {
@@ -46,14 +44,14 @@ public class OnboardingAdapter extends BaseAdapter {
                 createBuyerRequest, BuyerResponse.class);
     }
 
-    public BuyerResponse updateBuyer(UpdateBuyerRequest updateBuyerRequest) {
-        String path = "/onboarding/v1/buyers/" + updateBuyerRequest.getId();
+    public BuyerResponse updateBuyer(Long id, UpdateBuyerRequest updateBuyerRequest) {
+        String path = "/onboarding/v1/buyers/" + id;
         return HttpClient.put(requestOptions.getBaseUrl() + path, createHeaders(updateBuyerRequest, path, requestOptions),
                 updateBuyerRequest, BuyerResponse.class);
     }
 
-    public BuyerResponse retrieveBuyer(RetrieveBuyerRequest retrieveBuyerRequest) {
-        String path = "/onboarding/v1/buyers/" + retrieveBuyerRequest.getId();
+    public BuyerResponse retrieveBuyer(Long id) {
+        String path = "/onboarding/v1/buyers/" + id;
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), BuyerResponse.class);
     }
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 import tr.com.tokenpay.response.common.ListResponse;
 
 @Data
-public class SubMerchantListResponse extends ListResponse<SubMerchantResponse> {
+public class PaymentDetailListResponse extends ListResponse<PaymentDetailResponse> {
 
 }

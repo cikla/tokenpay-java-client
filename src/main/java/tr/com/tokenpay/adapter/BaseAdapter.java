@@ -16,6 +16,12 @@ public abstract class BaseAdapter {
     private static final String AUTH_VERSION_HEADER_NAME = "x-auth-version";
     private static final String SIGNATURE_HEADER_NAME = "x-signature";
 
+    protected final RequestOptions requestOptions;
+
+    public BaseAdapter(RequestOptions requestOptions) {
+        this.requestOptions = requestOptions;
+    }
+
     protected Map<String, String> createHeaders(BaseRequest request, String path, RequestOptions requestOptions) {
         return createHttpHeaders(request, path, requestOptions);
     }
