@@ -8,28 +8,27 @@ import tr.com.tokenpay.request.SearchPayoutCompletedTransactionsRequest;
 import tr.com.tokenpay.response.BouncedSubMerchantRowListResponse;
 import tr.com.tokenpay.response.PayoutCompletedTransactionListResponse;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SettlementReportingSample {
 
-    private final TokenPay tokenPay = new TokenPay("api-key", "secret-key", "http://localhost:8000");
+    private final TokenPay tokenPay = new TokenPay("api-key", "secret-key", "https://api-gateway.tokenpay.com.tr");
 
     @Test
-    void search_bounced_submerchant_rows_sample() throws ParseException {
+    void search_bounced_sub_merchant_rows() {
         SearchBouncedSubMerchantRowsRequest request = SearchBouncedSubMerchantRowsRequest.builder()
                 .startDate(LocalDateTime.now().minusDays(10))
                 .endDate(LocalDateTime.now())
                 .build();
 
-        BouncedSubMerchantRowListResponse bouncedSubMerchantRowListResponse = tokenPay.settlementReporting().searchBouncedSubMerchantRows(request);
-        assertNotNull(bouncedSubMerchantRowListResponse);
+        BouncedSubMerchantRowListResponse response = tokenPay.settlementReporting().searchBouncedSubMerchantRows(request);
+        assertNotNull(response);
     }
 
     @Test
-    void search_payout_completed_transactions() throws ParseException {
+    void search_payout_completed_transactions() {
         SearchPayoutCompletedTransactionsRequest request = SearchPayoutCompletedTransactionsRequest.builder()
                 .startDate(LocalDateTime.now().minusDays(10))
                 .endDate(LocalDateTime.now())
@@ -37,7 +36,7 @@ public class SettlementReportingSample {
                 .settlementType(SettlementType.SETTLEMENT)
                 .build();
 
-        PayoutCompletedTransactionListResponse payoutCompletedTransactionListResponse = tokenPay.settlementReporting().searchPayoutCompletedTransactions(request);
-        assertNotNull(payoutCompletedTransactionListResponse);
+        PayoutCompletedTransactionListResponse response = tokenPay.settlementReporting().searchPayoutCompletedTransactions(request);
+        assertNotNull(response);
     }
 }

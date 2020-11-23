@@ -2,14 +2,13 @@ package tr.com.tokenpay.request;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import tr.com.tokenpay.model.CardAssociation;
 import tr.com.tokenpay.model.CardType;
-import tr.com.tokenpay.request.common.BaseRequest;
+import tr.com.tokenpay.request.common.Request;
 
 @Data
-@SuperBuilder
-public class SearchStoredCardsRequest extends BaseRequest {
+@Builder
+public class SearchStoredCardsRequest implements Request {
 
     private String cardAlias;
     private String cardBrand;

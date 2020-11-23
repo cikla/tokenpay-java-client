@@ -2,13 +2,12 @@ package tr.com.tokenpay.request;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import tr.com.tokenpay.model.RefundDestinationType;
-import tr.com.tokenpay.request.common.BaseRequest;
+import tr.com.tokenpay.request.common.Request;
 
 @Data
-@SuperBuilder
-public class RefundPaymentRequest extends BaseRequest {
+@Builder
+public class RefundPaymentRequest implements Request {
 
     private Long paymentId;
     private String conversationId;
