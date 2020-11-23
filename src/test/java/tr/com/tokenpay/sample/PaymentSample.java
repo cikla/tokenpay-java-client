@@ -291,7 +291,7 @@ public class PaymentSample {
     }
 
     @Test
-    void approve_payment_transaction() {
+    void approve_payment_transactions() {
         ApprovePaymentTransactionsRequest request = ApprovePaymentTransactionsRequest.builder()
                 .isTransactional(true)
                 .paymentTransactionIds(new HashSet<Long>() {{
@@ -306,7 +306,7 @@ public class PaymentSample {
     }
 
     @Test
-    void disapprove_payment_transaction() {
+    void disapprove_payment_transactions() {
         DisapprovePaymentTransactionsRequest request = DisapprovePaymentTransactionsRequest.builder()
                 .isTransactional(true)
                 .paymentTransactionIds(new HashSet<Long>() {{
