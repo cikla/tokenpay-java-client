@@ -26,4 +26,4 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build and Publish with Gradle
-        run: ./gradlew build publish -Pversion=${{github.event.release.tag_name}} -PrepoUser=${{secrets.NEXUS_USER} -PrepoPassword=${{secrets.NEXUS_PASSWORD}
+        run: ./gradlew build publish -Pversion=${{github.event.release.tag_name}} -PrepoUser=${{secrets.NEXUS_USER}} -PrepoPassword=${{secrets.NEXUS_PASSWORD}}
