@@ -1,24 +1,48 @@
 plugins {
-    id 'java-library'
+	id 'java-library'
 }
 
 repositories {
-    jcenter()
+	jcenter()
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'commons-codec:commons-codec:1.15'
+	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'commons-codec:commons-codec:1.15'
 
-    compileOnly "org.projectlombok:lombok:1.18.4"
-    annotationProcessor("org.projectlombok:lombok:1.18.4")
+	compileOnly "org.projectlombok:lombok:1.18.4"
+	annotationProcessor("org.projectlombok:lombok:1.18.4")
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
+	exclude 'tr/com/tokenpay/sample/**'
+
 }
 
+group = 'tr.com.tokenpay'
 sourceCompatibility = '1.8'
+apply plugin: 'maven-publish'
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifact("build/libs/tokenpay-$version" + ".jar") {
+				extension 'jar'
+			}
+		}
+	}
+	repositories {
+		maven {
+			name 'nexus'
+			//url "http://[your nexus ip]:[your nexus port]/repository/maven-releases/"
+			url repoUrl
+			credentials {
+				username project.repoUser
+				password project.repoPassword
+			}
+		}
+	}
+}
