@@ -29,7 +29,6 @@ java {
 	withSourcesJar()
 }
 
-
 group = 'tr.com.tokenpay'
 sourceCompatibility = '1.8'
 
@@ -40,6 +39,13 @@ publishing {
 				name = 'TokenPay'
 				description = 'TokenPay Java API Client'
 				url = 'https://github.com/TokenPayEng/tokenpay-java-client'
+				licenses {
+					license {
+						name = 'The Apache License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
 				developers {
 					developer {
 						id = 'TokenPay'
