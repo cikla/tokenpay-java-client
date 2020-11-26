@@ -1,5 +1,7 @@
 plugins {
 	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
 }
 
 repositories {
@@ -20,17 +22,36 @@ dependencies {
 test {
 	useJUnitPlatform()
 	exclude 'tr/com/tokenpay/sample/**'
-
 }
+
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
 
 group = 'tr.com.tokenpay'
 sourceCompatibility = '1.8'
-apply plugin: 'maven-publish'
+
 publishing {
 	publications {
-		maven(MavenPublication) {
-			artifact("build/libs/tokenpay-$version" + ".jar") {
-				extension 'jar'
+		mavenJava(MavenPublication) {
+			pom {
+				name = 'TokenPay'
+				description = 'TokenPay Java API Client'
+				url = 'https://github.com/TokenPayEng/tokenpay-java-client'
+				developers {
+					developer {
+						id = 'TokenPay'
+						name = 'TokenPay'
+						email = 'api-clients@tokenpay.com.tr'
+					}
+				}
+				scm {
+					connection = 'scm:git:git://github.com/TokenPayEng/tokenpay-java-client'
+					developerConnection = 'scm:git:git@github.com:TokenPayEng/tokenpay-java-client'
+					url = 'https://github.com/TokenPayEng/tokenpay-java-client'
+				}
 			}
 		}
 	}
@@ -44,4 +65,8 @@ publishing {
 			}
 		}
 	}
+}
+
+signing {
+	sign publishing.publications.mavenJava
 }
