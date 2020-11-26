@@ -35,6 +35,7 @@ sourceCompatibility = '1.8'
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			from components.java
 			pom {
 				name = 'TokenPay'
 				description = 'TokenPay Java API Client'
