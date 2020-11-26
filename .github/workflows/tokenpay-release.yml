@@ -26,5 +26,5 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build and Publish with Gradle
-      - run: openssl enc -aes-256-cbc -pass pass:${{secrets.NEXUS_USER}} -d -A -in tokenpay.gpg.enc -out tokenpay.gpg |
+        run: openssl enc -aes-256-cbc -pass pass:${{secrets.NEXUS_USER}} -d -A -in tokenpay.gpg.enc -out tokenpay.gpg |
             ./gradlew build publish -Pversion=${{github.event.release.tag_name}} -PrepoUser=${{secrets.NEXUS_USER}} -PrepoPassword=${{secrets.NEXUS_PASSWORD}} -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=${{secrets.SIGNING_PASSWORD}}
