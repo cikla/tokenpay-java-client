@@ -26,7 +26,7 @@ public final class HashGenerator {
                 hashData = decodedUrl + apiKey + secretKey + randomString;
             }
 
-            return Base64.encodeBase64String(DigestUtils.sha256(hashData)).toUpperCase();
+            return Base64.encodeBase64String(DigestUtils.sha256(hashData));
         } catch (Exception e) {
             throw new TokenPayException(e);
         }
