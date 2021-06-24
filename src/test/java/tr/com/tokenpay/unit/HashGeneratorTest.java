@@ -13,7 +13,7 @@ public class HashGeneratorTest {
     @Test
     void should_generate_hash() {
         //given
-        String expectedSignature = "JAIELEQK7VZ4LJDB9UOWYVIYAM0H5DWJGFJDC5EV4Y4=";
+        String expectedSignature = "jaieleqk7vz4ljdb9uowyviyam0h5dwjgfjdc5ev4y4=";
         CreateBuyerRequest request = CreateBuyerRequest.builder()
                 .buyerExternalId("ext-1511")
                 .email("haluk.demir@example.com")
@@ -34,7 +34,7 @@ public class HashGeneratorTest {
     @Test
     void should_generate_hash_when_request_body_null() {
         //given
-        String expectedSignature = "YRF3CBLVJP9TFHTR9NWSMZPV91HIBPZXJT88NDEWXIK=";
+        String expectedSignature = "yrf3cblvjp9tfhtr9nwsmzpv91hibpzxjt88ndewxik=";
 
         //when
         String signature = HashGenerator.generateHash("http://api-gateway.tokenpay.com.tr", "api-key", "secret-key",
