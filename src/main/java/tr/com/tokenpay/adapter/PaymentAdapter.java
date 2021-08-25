@@ -127,4 +127,10 @@ public class PaymentAdapter extends BaseAdapter {
         String path = "/payment/v1/cards" + query;
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), StoredCardListResponse.class);
     }
+
+    public PaymentResponse postAuthPayment(long paymentId, PostAuthPaymentRequest postAuthPaymentRequest) {
+        String path = "/payment/v1/card-payments/" + paymentId + "/post-auth";
+        return HttpClient.post(requestOptions.getBaseUrl() + path, createHeaders(postAuthPaymentRequest, path, requestOptions),
+                postAuthPaymentRequest, PaymentResponse.class);
+    }
 }

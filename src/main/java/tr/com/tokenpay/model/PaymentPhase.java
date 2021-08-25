@@ -2,5 +2,7 @@ package tr.com.tokenpay.model;
 
 public enum PaymentPhase {
 
-    AUTH
+    AUTH,
+    PRE_AUTH,
+    POST_AUTH
 }
