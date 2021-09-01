@@ -60,13 +60,6 @@ public class LinkSample {
     }
 
     @Test
-    void delete_link() {
-        Long id = 65L;
-
-        tokenPay.link().delete(id);
-    }
-
-    @Test
     void search_links() {
         SearchLinksRequest searchLinksRequest = SearchLinksRequest.builder()
                 .status(Status.ACTIVE)

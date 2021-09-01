@@ -35,9 +35,4 @@ public class LinkAdapter extends BaseAdapter {
         String path = "/tokenlink/v1/products?" + params;
         return HttpClient.get(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), LinkListResponse.class);
     }
-
-    public void delete(Long id) {
-        String path = "/tokenlink/v1/products/" + id;
-        HttpClient.delete(requestOptions.getBaseUrl() + path, createHeaders(path, requestOptions), Void.class);
-    }
 }
