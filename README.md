@@ -8,8 +8,21 @@ This repo contains the Java client for TokenPay API.
 - Java 1.8 or newer
 
 ## Installation
+Apache Maven:
 ```bash
-
+<dependency>
+  <groupId>tr.com.tokenpay</groupId>
+  <artifactId>tokenpay</artifactId>
+  <version>0.0.4</version>
+</dependency>
+```
+Gradle Groovy DSL
+```
+implementation 'tr.com.tokenpay:tokenpay:0.0.4'
+```
+Gradle Kotlin DSL
+```
+implementation("tr.com.tokenpay:tokenpay:0.0.4")
 ```
 
 ## Usage
