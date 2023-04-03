@@ -1,79 +1,79 @@
 plugins {
-	id 'java-library'
-	id 'maven-publish'
-	id 'signing'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 repositories {
-	jcenter()
+    jcenter()
 }
 
 dependencies {
-	implementation 'com.google.code.gson:gson:2.8.6'
-	implementation 'commons-codec:commons-codec:1.15'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'commons-codec:commons-codec:1.15'
 
-	compileOnly "org.projectlombok:lombok:1.18.4"
-	annotationProcessor("org.projectlombok:lombok:1.18.4")
+    compileOnly "org.projectlombok:lombok:1.18.4"
+    annotationProcessor("org.projectlombok:lombok:1.18.4")
 
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
 test {
-	useJUnitPlatform()
-	exclude 'tr/com/tokenpay/sample/**'
+    useJUnitPlatform()
+    exclude 'tr/com/tokenpay/sample/**'
 }
 
 java {
-	withJavadocJar()
-	withSourcesJar()
+    withJavadocJar()
+    withSourcesJar()
 }
 
 group = 'tr.com.tokenpay'
 sourceCompatibility = '1.8'
 
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			pom {
-				name = 'TokenPay'
-				description = 'TokenPay Java API Client'
-				url = 'https://github.com/TokenPayEng/tokenpay-java-client'
-				licenses {
-					license {
-						name = 'The Apache License, Version 2.0'
-						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-					}
-				}
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'TokenPay'
+                description = 'TokenPay Java API Client'
+                url = 'https://github.com/TokenPayEng/tokenpay-java-client'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
 
-				developers {
-					developer {
-						id = 'TokenPay'
-						name = 'TokenPay'
-						email = 'api-clients@tokenpay.com.tr'
-					}
-				}
-				scm {
-					connection = 'scm:git:git://github.com/TokenPayEng/tokenpay-java-client'
-					developerConnection = 'scm:git:git@github.com:TokenPayEng/tokenpay-java-client'
-					url = 'https://github.com/TokenPayEng/tokenpay-java-client'
-				}
-			}
-		}
-	}
-	repositories {
-		maven {
-			name 'nexus'
-			url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-			credentials {
-				username project.repoUser
-				password project.repoPassword
-			}
-		}
-	}
+                developers {
+                    developer {
+                        id = 'TokenPay'
+                        name = 'TokenPay'
+                        email = 'api-clients@tokenpay.com.tr'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/TokenPayEng/tokenpay-java-client'
+                    developerConnection = 'scm:git:git@github.com:TokenPayEng/tokenpay-java-client'
+                    url = 'https://github.com/TokenPayEng/tokenpay-java-client'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name 'nexus'
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username project.repoUser
+                password project.repoPassword
+            }
+        }
+    }
 }
 
 signing {
-	sign publishing.publications.mavenJava
+    sign publishing.publications.mavenJava
 }

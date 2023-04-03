@@ -27,7 +27,7 @@ public class InstallmentSample {
         assertEquals(response.getCardType(), CardType.CREDIT_CARD);
         assertEquals(response.getCardAssociation(), CardAssociation.MASTER_CARD);
         assertEquals(response.getCardBrand(), "World");
-        assertEquals(response.getBankName(), "YAPI VE KREDİ BANKASI A.Ş.");
+        assertEquals(response.getBankName(), "YAPI VE KREDİ BANKASI A.S.");
         assertEquals(response.getBankCode(), 67L);
         assertEquals(response.getCommercial(), false);
     }

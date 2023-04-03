@@ -23,6 +23,7 @@ public class HttpClient {
     private static final int CONNECT_TIMEOUT = 15000;
     private static final int READ_TIMEOUT = 140000;
     private static final Gson gson = buildGson();
+    private static final JsonParser parser = new JsonParser();
 
     private HttpClient() {
     }
@@ -56,7 +57,7 @@ public class HttpClient {
         }
     }
 
-    private static <T> T handleResponse(Class<T> responseType, HttpResponse httpResponse) {
+    private static <T> T handleResponse(Class<T> responseType, HttpResponse httpResponse) throws ClassNotFoundException {
         Response response = gson.fromJson(httpResponse.getBody(), Response.class);
 
         if (httpResponse.getStatusCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
@@ -65,6 +66,8 @@ public class HttpClient {
                 throw new TokenPayException(errors.getErrorCode(), errors.getErrorDescription(), errors.getErrorGroup());
             }
             throw new TokenPayException("1", "Unknown response", "Unknown");
+        }else{
+            response.setData(parser.parse(httpResponse.getBody()).getAsJsonObject().get("data").getAsJsonObject());
         }
 
         if (responseType == Void.class) {

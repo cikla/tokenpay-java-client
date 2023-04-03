@@ -17,6 +17,7 @@ public class UpdateSubMerchantRequest implements Request {
     private String taxNumber;
     private String contactName;
     private String contactSurname;
+    private String contactPhoneNumber;
     private String identityNumber;
     private String legalCompanyTitle;
 }
