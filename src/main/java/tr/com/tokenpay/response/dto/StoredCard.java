@@ -1,14 +1,19 @@
 package tr.com.tokenpay.response.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tr.com.tokenpay.model.CardAssociation;
 import tr.com.tokenpay.model.CardType;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class StoredCard {
-
-    private String binNumber;
     private String lastFourDigits;
+    private String binNumber;
     private String expireYear;
     private String expireMonth;
     private String cardHolderName;

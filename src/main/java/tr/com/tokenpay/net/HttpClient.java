@@ -46,10 +46,18 @@ public class HttpClient {
 
     private static <T> T exchange(String url, HttpMethod httpMethod, Map<String, String> headers, Object request, Class<T> responseType) {
         try {
+
+            System.out.println("exchange url: "+url);
+            System.out.println("exchange HEADERs: "+headers.toString());
+            
             String body = gson.toJson(request);
+            System.out.println("exchange request json: "+body);
+            
             InputStream content = request == null ? null : new ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET));
             HttpResponse httpResponse = send(url, httpMethod, content, headers);
-            return handleResponse(responseType, httpResponse);
+           
+            	return handleResponse(responseType, httpResponse);
+            
         } catch (TokenPayException e) {
             throw e;
         } catch (Exception e) {
@@ -58,25 +66,32 @@ public class HttpClient {
     }
 
     private static <T> T handleResponse(Class<T> responseType, HttpResponse httpResponse) throws ClassNotFoundException {
-        Response response = gson.fromJson(httpResponse.getBody(), Response.class);
+        try {
+	        System.out.println("Response CODE: "+httpResponse.getStatusCode());
+	        Response response = gson.fromJson(httpResponse.getBody(), Response.class);
+	        
+	        if (httpResponse.getStatusCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
+	            if (response != null && response.getErrors() != null) {
+	                ErrorResponse errors = response.getErrors();
+	                throw new TokenPayException(errors.getErrorCode(), errors.getErrorDescription(), errors.getErrorGroup());
+	            }
+	            throw new TokenPayException("1", "Unknown response", "Unknown");
+	        }else{
+	            response.setData(parser.parse(httpResponse.getBody()).getAsJsonObject().get("data").getAsJsonObject());
+	        }
+	
+	        if (responseType == Void.class) {
+	            return null;
+	        } else if (response == null) {
+	            throw new TokenPayException("1", "Empty response", "Unknown");
+	        }
 
-        if (httpResponse.getStatusCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
-            if (response != null && response.getErrors() != null) {
-                ErrorResponse errors = response.getErrors();
-                throw new TokenPayException(errors.getErrorCode(), errors.getErrorDescription(), errors.getErrorGroup());
-            }
-            throw new TokenPayException("1", "Unknown response", "Unknown");
-        }else{
-            response.setData(parser.parse(httpResponse.getBody()).getAsJsonObject().get("data").getAsJsonObject());
-        }
-
-        if (responseType == Void.class) {
-            return null;
-        } else if (response == null) {
-            throw new TokenPayException("1", "Empty response", "Unknown");
-        }
-
-        return gson.fromJson(response.getData(), responseType);
+	        return gson.fromJson(response.getData(), responseType);
+	    	
+	    } catch (Exception e) {
+	    	throw new TokenPayException(String.valueOf(httpResponse.getStatusCode()), httpResponse.getBody(), "");
+	    	
+	    } 
     }
 
     private static HttpResponse send(String url, HttpMethod httpMethod, InputStream content, Map<String, String> headers) throws IOException {

@@ -40,11 +40,11 @@
   <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <url>http://62.248.57.34:8081/repository/maven-releases/</url>
+            <url>http://94.55.20.58:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>http://62.248.57.34:8081/repository/maven-snapshots/</url>
+            <url>http://94.55.20.58:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
    </distributionManagement>
 
@@ -70,7 +70,6 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>

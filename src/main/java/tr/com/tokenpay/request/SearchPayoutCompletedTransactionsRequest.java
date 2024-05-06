@@ -13,6 +13,6 @@ public class SearchPayoutCompletedTransactionsRequest implements Request {
 
     private Long settlementFileId;
     private SettlementType settlementType;
-    private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private LocalDateTime startDate;
 }
