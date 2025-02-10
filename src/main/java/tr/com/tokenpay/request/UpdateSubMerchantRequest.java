@@ -20,4 +20,5 @@ public class UpdateSubMerchantRequest implements Request {
     private String contactPhoneNumber;
     private String identityNumber;
     private String legalCompanyTitle;
+    private String paymentDaysOfWeek;
 }
